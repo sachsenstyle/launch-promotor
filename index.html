@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Launch-Promoter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0F1E;
+    --surface:#111830;
+    --surface2:#182140;
+    --line:#26305A;
+    --text:#F4F5F9;
+    --muted:#8C94B8;
+    --gold:#F5C542;
+    --goldhell:#FFDD7A;
+    --gruen:#2EE6A8;
+    --rot:#FF5C7C;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.5;
+    min-height:100vh;
+  }
+  header{
+    padding:30px 20px 18px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+    background:radial-gradient(ellipse 70% 100% at 50% 0%, rgba(245,197,66,.08), transparent);
+  }
+  h1{
+    font-family:'Sora',sans-serif;
+    font-weight:800;
+    font-size:clamp(24px,5vw,36px);
+    letter-spacing:.3px;
+  }
+  h1 .gold{color:var(--gold)}
+  header p{color:var(--muted);margin-top:6px;font-size:13px}
+  nav{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    padding:14px 12px;
+    flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;background:var(--bg);z-index:10;
+  }
+  nav button{
+    background:var(--surface);
+    color:var(--muted);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:9px 18px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    transition:all .15s;
+  }
+  nav button:hover{color:var(--text)}
+  nav button.active{
+    color:#0A0F1E;
+    background:linear-gradient(90deg,var(--gold),var(--goldhell));
+    border-color:transparent;
+  }
+  main{max-width:880px;margin:0 auto;padding:22px 16px 80px}
+  section{display:none}
+  section.active{display:block;animation:fadeIn .25s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){section.active{animation:none}}
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px;
+    margin-bottom:16px;
+  }
+  h2{
+    font-family:'Sora',sans-serif;
+    font-weight:700;
+    font-size:18px;
+    margin-bottom:14px;
+  }
+  label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--muted);
+    margin:12px 0 5px;
+  }
+  input,select,textarea{
+    width:100%;
+    background:var(--surface2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    color:var(--text);
+    padding:11px 13px;
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+  }
+  input:focus,select:focus,textarea:focus{
+    outline:2px solid var(--gold);
+    outline-offset:1px;
+    border-color:transparent;
+  }
+  textarea{resize:vertical;min-height:70px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.row{grid-template-columns:1fr}}
+
+  .btn{
+    display:inline-block;
+    border:none;
+    border-radius:10px;
+    padding:12px 22px;
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    margin-top:16px;
+    transition:transform .1s;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-gold{background:linear-gradient(90deg,var(--gold),var(--goldhell));color:#0A0F1E}
+  .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  .btn-sm{padding:7px 14px;font-size:13px;margin-top:0}
+
+  .provi{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 14px;
+    border-radius:10px;
+    margin-top:14px;
+    font-weight:600;
+    font-size:14px;
+    background:rgba(46,230,168,.07);
+    border:1px solid rgba(46,230,168,.3);
+  }
+  .provi .betrag{
+    font-family:'Sora',sans-serif;
+    font-weight:800;
+    font-size:20px;
+    color:var(--gruen);
+  }
+  .provi small{display:block;font-weight:400;color:var(--muted)}
+
+  .produkt{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    background:var(--surface2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    margin-bottom:10px;
+    flex-wrap:wrap;
+  }
+  .produkt .info{flex:1;min-width:200px}
+  .produkt .name{font-weight:700}
+  .produkt .meta{font-size:13px;color:var(--muted);margin-top:2px}
+  .produkt .meta .gruen{color:var(--gruen);font-weight:700}
+
+  .paket-block{
+    background:var(--surface2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:18px;
+    margin-top:16px;
+  }
+  .paket-block .kopf{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+    flex-wrap:wrap;
+  }
+  .paket-block .titel{
+    font-family:'Sora',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color:var(--gold);
+    letter-spacing:.5px;
+    text-transform:uppercase;
+  }
+  .paket-block .inhalt{white-space:pre-wrap;line-height:1.7;font-size:15px}
+
+  .hinweis{
+    background:rgba(245,197,66,.06);
+    border:1px solid rgba(245,197,66,.25);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:16px;
+  }
+  .hinweis strong{color:var(--text)}
+  .leer{color:var(--muted);text-align:center;padding:30px 10px;font-size:14px}
+  .toast{
+    position:fixed;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--gold);
+    color:#0A0F1E;
+    font-weight:700;
+    padding:12px 24px;
+    border-radius:999px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s;
+    z-index:100;
+  }
+  .toast.show{opacity:1}
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    padding:20px;
+    border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Launch<span class="gold">-</span>Promoter</h1>
+  <p>Digitale Affiliate-Produkte erfassen &middot; komplettes Promo-Paket auf Knopfdruck &middot; Video, Facebook, E-Mail, Pinterest</p>
+</header>
+
+<nav>
+  <button class="active" data-tab="produkte" onclick="zeigeTab('produkte')">💰 Produkte</button>
+  <button data-tab="paket" onclick="zeigeTab('paket')">🚀 Promo-Paket</button>
+</nav>
+
+<main>
+
+<!-- ============ TAB: PRODUKTE ============ -->
+<section id="tab-produkte">
+  <div class="card">
+    <h2>Neues Affiliate-Produkt anlegen</h2>
+    <label for="pName">Produktname</label>
+    <input id="pName" type="text" placeholder="z. B. TikFluencer">
+    <div class="row">
+      <div>
+        <label for="pVendor">Anbieter / Vendor</label>
+        <input id="pVendor" type="text" placeholder="z. B. Ralf Schmitz">
+      </div>
+      <div>
+        <label for="pLaunch">Launch- / Aktionsdatum (optional)</label>
+        <input id="pLaunch" type="text" placeholder="z. B. 21.07.2026">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="pPreis">Preis (€)</label>
+        <input id="pPreis" type="number" step="0.01" min="0" placeholder="497">
+      </div>
+      <div>
+        <label for="pProvision">Provision (%)</label>
+        <input id="pProvision" type="number" step="0.1" min="0" placeholder="50">
+      </div>
+    </div>
+    <label for="pLink">Dein Affiliate-Link</label>
+    <input id="pLink" type="text" placeholder="https://www.digistore24.com/redir/...">
+    <label for="pZielgruppe">Zielgruppe (kurz)</label>
+    <input id="pZielgruppe" type="text" placeholder="z. B. Einsteiger, die mit KI und TikTok Geld verdienen wollen">
+    <label for="pNutzen">Die 3 stärksten Nutzen für den Käufer (einer pro Zeile)</label>
+    <textarea id="pNutzen" placeholder="ohne eigenes Gesicht vor der Kamera Geld verdienen&#10;Schritt-für-Schritt-Anleitung, kein Vorwissen nötig&#10;fertige Skript-Vorlagen und Prompt-Bibliothek inklusive"></textarea>
+
+    <div id="proviBox"></div>
+
+    <button class="btn btn-gold" onclick="produktSpeichern()">Produkt speichern</button>
+  </div>
+
+  <div class="card">
+    <h2>Meine Affiliate-Produkte</h2>
+    <div id="produktListe"></div>
+  </div>
+</section>
+
+<!-- ============ TAB: PROMO-PAKET ============ -->
+<section id="tab-paket">
+  <div class="hinweis">
+    <strong>Denk dran:</strong> Affiliate-Posts immer als Werbung kennzeichnen (z. B. „Werbung" oder „Affiliate-Link") – das ist in Deutschland Pflicht. Avatar-Videos auf TikTok als KI-Inhalt markieren.
+  </div>
+  <div class="card">
+    <h2>Promo-Paket generieren</h2>
+    <label for="gProdukt">Produkt auswählen</label>
+    <select id="gProdukt"></select>
+    <button class="btn btn-gold" onclick="paketGenerieren()">🚀 Komplettes Paket erstellen</button>
+    <button class="btn btn-ghost" onclick="paketGenerieren()" title="Erzeugt neue Varianten">🔄 Neue Varianten</button>
+    <div id="paketBox"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="toast" id="toast">Kopiert ✔</div>
+
+<footer>Launch-Promoter &middot; privates Arbeitstool &middot; Daten werden nur lokal in deinem Browser gespeichert</footer>
+
+<script>
+/* ---------- Sicherer Speicher ---------- */
+const memStore = {};
+function speichern(key, wert){
+  try{ localStorage.setItem(key, JSON.stringify(wert)); }
+  catch(e){ memStore[key] = JSON.stringify(wert); }
+}
+function laden(key, fallback){
+  try{
+    const v = localStorage.getItem(key);
+    if(v !== null) return JSON.parse(v);
+  }catch(e){
+    if(memStore[key]) return JSON.parse(memStore[key]);
+  }
+  return fallback;
+}
+let produkte = laden('launchpromoter_produkte', []);
+
+/* ---------- Tabs ---------- */
+function zeigeTab(name){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelector('nav button[data-tab="'+name+'"]').classList.add('active');
+  if(name==='paket') produktDropdownFuellen();
+}
+document.getElementById('tab-produkte').classList.add('active');
+
+/* ---------- Provisionsrechner ---------- */
+function proviAnzeigen(){
+  const preis = parseFloat(document.getElementById('pPreis').value);
+  const prov  = parseFloat(document.getElementById('pProvision').value);
+  const box = document.getElementById('proviBox');
+  if(isNaN(preis) || isNaN(prov)){ box.innerHTML=''; return; }
+  const euro = preis * prov / 100;
+  box.innerHTML = `
+    <div class="provi">
+      <span class="betrag">${euro.toFixed(2).replace('.',',')} €</span>
+      <span>Provision pro Verkauf<small>Schon 4 Verkäufe im Monat = ${(euro*4).toFixed(0)} €</small></span>
+    </div>`;
+}
+document.getElementById('pPreis').addEventListener('input', proviAnzeigen);
+document.getElementById('pProvision').addEventListener('input', proviAnzeigen);
+
+/* ---------- Produkte ---------- */
+function produktSpeichern(){
+  const name = document.getElementById('pName').value.trim();
+  const vendor = document.getElementById('pVendor').value.trim();
+  const launch = document.getElementById('pLaunch').value.trim();
+  const preis = parseFloat(document.getElementById('pPreis').value);
+  const prov = parseFloat(document.getElementById('pProvision').value);
+  const link = document.getElementById('pLink').value.trim();
+  const zielgruppe = document.getElementById('pZielgruppe').value.trim();
+  const nutzen = document.getElementById('pNutzen').value.split('\n').map(v=>v.trim()).filter(v=>v);
+
+  if(!name){ alert('Bitte einen Produktnamen eingeben.'); return; }
+  if(isNaN(preis) || isNaN(prov)){ alert('Bitte Preis und Provision eingeben.'); return; }
+  if(!link){ alert('Bitte deinen Affiliate-Link eintragen.'); return; }
+  if(nutzen.length < 1){ alert('Bitte mindestens einen Nutzen eingeben.'); return; }
+
+  produkte.push({ id: Date.now(), name, vendor, launch, preis, prov, link, zielgruppe, nutzen, provEuro: preis*prov/100 });
+  speichern('launchpromoter_produkte', produkte);
+  produktListeRendern();
+
+  ['pName','pVendor','pLaunch','pPreis','pProvision','pLink','pZielgruppe','pNutzen'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('proviBox').innerHTML='';
+  toast('Produkt gespeichert ✔');
+}
+
+function produktListeRendern(){
+  const box = document.getElementById('produktListe');
+  if(produkte.length===0){
+    box.innerHTML = '<div class="leer">Noch keine Produkte. Schau auf Digistore24 oder launchkalender.de nach passenden Launches und trag sie hier ein.</div>';
+    return;
+  }
+  box.innerHTML = produkte.map(p=>`
+    <div class="produkt">
+      <div class="info">
+        <span class="name">${esc(p.name)}</span>
+        <div class="meta">${p.preis.toFixed(2).replace('.',',')} € &middot; ${p.prov}% = <span class="gruen">${p.provEuro.toFixed(2).replace('.',',')} € pro Verkauf</span>${p.vendor?' &middot; '+esc(p.vendor):''}${p.launch?' &middot; Launch: '+esc(p.launch):''}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-gold btn-sm" onclick="zumPaket(${p.id})">Paket →</button>
+        <button class="btn btn-ghost btn-sm" onclick="produktLoeschen(${p.id})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+function produktLoeschen(id){
+  if(!confirm('Produkt wirklich löschen?')) return;
+  produkte = produkte.filter(p=>p.id!==id);
+  speichern('launchpromoter_produkte', produkte);
+  produktListeRendern();
+}
+
+function zumPaket(id){
+  zeigeTab('paket');
+  document.getElementById('gProdukt').value = id;
+}
+
+function produktDropdownFuellen(){
+  const sel = document.getElementById('gProdukt');
+  if(produkte.length===0){
+    sel.innerHTML = '<option value="">– erst ein Produkt anlegen –</option>';
+    return;
+  }
+  sel.innerHTML = produkte.map(p=>`<option value="${p.id}">${esc(p.name)} (${p.provEuro.toFixed(0)} € Provision)</option>`).join('');
+}
+
+/* ---------- Promo-Paket ---------- */
+function zufall(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function paketGenerieren(){
+  const pid = parseInt(document.getElementById('gProdukt').value);
+  const p = produkte.find(x=>x.id===pid);
+  if(!p){ alert('Bitte erst ein Produkt anlegen und auswählen.'); return; }
+
+  const n1 = p.nutzen[0] || 'es funktioniert Schritt für Schritt';
+  const n2 = p.nutzen[1] || n1;
+  const n3 = p.nutzen[2] || n2;
+  const ziel = p.zielgruppe || 'alle, die online durchstarten wollen';
+  const preisTxt = p.preis.toFixed(2).replace('.',',');
+  const launchTxt = p.launch ? ` am ${p.launch}` : '';
+
+  /* --- 1. HeyGen-Videoskript --- */
+  const videoHooks = [
+    `Stopp – bevor du weiterscrollst: Das hier könnte genau das sein, wonach du gesucht hast.`,
+    `Ich hab mir ${p.name} genauer angeschaut – und das musst du wissen, bevor du dich entscheidest.`,
+    `Alle reden gerade über ${p.name}. Ich sage dir in 40 Sekunden, ob sich das wirklich lohnt.`,
+    `Wenn du zu ${ziel} gehörst, dann sind die nächsten Sekunden wichtig für dich.`
+  ];
+  const videoCtas = [
+    `Den Link findest du in meiner Bio beziehungsweise in der Beschreibung. Schau es dir unverbindlich an – entscheiden kannst du danach immer noch.`,
+    `Alle Infos gibt es über den Link in der Beschreibung. Und wenn du Fragen hast, schreib sie mir in die Kommentare!`,
+    `Klick auf den Link in der Bio und mach dir selbst ein Bild. Und folge mir, wenn du mehr ehrliche Einschätzungen zu solchen Produkten willst.`
+  ];
+  const video = zufall(videoHooks) +
+`\n\nEs geht um ${p.name}${p.vendor ? ' von ' + p.vendor : ''}. Das Wichtigste in Kürze: ${n1}.
+Dazu kommt: ${n2}. Genau das macht es für ${ziel} interessant.
+Und der Punkt, der mich überzeugt hat: ${n3}.${p.launch ? `\nWichtig: Der Start ist${launchTxt} – danach kann sich der Preis ändern.` : ''}
+Aktuell liegt der Preis bei ${preisTxt} €.\n\n` + zufall(videoCtas);
+
+  /* --- 2. Drei Facebook-Posts --- */
+  const fb1 =
+`🚀 ${p.launch ? 'Save the Date: ' + p.launch + '!' : 'Kennt ihr das schon?'}
+
+${p.name}${p.vendor ? ' von ' + p.vendor : ''} ${p.launch ? 'startet' + launchTxt : 'ist jetzt verfügbar'} – und ich habe es mir für euch angeschaut.
+
+Das Versprechen: ${n1}. Für ${ziel} klingt das erstmal groß – aber der Ansatz dahinter ist durchdacht.
+
+Ich halte euch auf dem Laufenden. Wer nichts verpassen will: 👉 ${p.link}
+
+(Werbung / Affiliate-Link)`;
+
+  const fb2 =
+`Mal ehrlich gefragt: ${n1} – wäre das was für dich? 🤔
+
+Genau das ist der Kern von ${p.name}. Was mir daran gefällt:
+
+✅ ${n1}
+✅ ${n2}
+✅ ${n3}
+
+Ich sage nicht, dass es für jeden passt. Aber wenn du zu ${ziel} gehörst, lohnt sich ein Blick: 👉 ${p.link}
+
+(Werbung / Affiliate-Link)`;
+
+  const fb3 =
+`Letzte Erinnerung${p.launch ? ' – ' + p.launch + ' ist es so weit' : ''}! ⏰
+
+Viele von euch haben nach ${p.name} gefragt. Hier nochmal die Fakten:
+
+💡 ${n1}
+💡 ${n2}
+💰 Preis: ${preisTxt} €${p.launch ? ' (Startpreis – kann danach steigen)' : ''}
+
+Alle Details findet ihr hier: 👉 ${p.link}
+
+Wer schon dabei ist: Schreibt mir gern eure ersten Eindrücke in die Kommentare!
+
+(Werbung / Affiliate-Link)`;
+
+  /* --- 3. E-Mail (MailerLite) --- */
+  const betreffe = [
+    `${p.name}: Das solltest du dir anschauen${p.launch ? ' (' + p.launch + ')' : ''}`,
+    `Ehrliche Einschätzung: Lohnt sich ${p.name}?`,
+    `${n1}? So geht das jetzt`
+  ];
+  const email =
+`Betreff: ${zufall(betreffe)}
+
+Hallo {$name},
+
+heute habe ich einen Tipp für dich, der zu dir passen könnte, wenn du dich für dieses Thema interessierst.
+
+Es geht um ${p.name}${p.vendor ? ' von ' + p.vendor : ''}. In Kurzform bekommst du damit:
+
+– ${n1}
+– ${n2}
+– ${n3}
+
+${p.launch ? `Wichtig zu wissen: Der Start ist${launchTxt}. Zum Launch gilt der Einstiegspreis von ${preisTxt} € – danach kann es teurer werden.` : `Der Preis liegt aktuell bei ${preisTxt} €.`}
+
+Schau es dir hier in Ruhe an:
+👉 ${p.link}
+
+Wie immer gilt: Kauf nichts, was du nicht brauchst. Aber wenn du zu ${ziel} gehörst, ist das einen Blick wert.
+
+Herzliche Grüße
+
+PS: Der Link oben ist ein Partnerlink – für dich ändert sich am Preis nichts.`;
+
+  /* --- 4. Pinterest-Pin --- */
+  const pin =
+`Pin-Titel:
+${n1} – so funktioniert's mit ${p.name}
+
+Pin-Beschreibung:
+${p.name} im Überblick: ${n1}, ${n2} und ${n3}. Ideal für ${ziel}. Jetzt alle Infos ansehen! ${p.launch ? 'Start' + launchTxt + '. ' : ''}#affiliatemarketing #onlinegeldverdienen #passiveseinkommen #nebeneinkommen (Werbung)
+
+Ziel-Link für den Pin:
+${p.link}`;
+
+  const bloecke = [
+    { titel:'🎬 Avatar-Videoskript (für HeyGen)', text: video },
+    { titel:'📘 Facebook-Post 1 – Ankündigung', text: fb1 },
+    { titel:'📘 Facebook-Post 2 – Nutzen', text: fb2 },
+    { titel:'📘 Facebook-Post 3 – Erinnerung', text: fb3 },
+    { titel:'✉️ E-Mail für MailerLite', text: email },
+    { titel:'📌 Pinterest-Pin', text: pin }
+  ];
+
+  window._paket = bloecke;
+  document.getElementById('paketBox').innerHTML = bloecke.map((b,i)=>`
+    <div class="paket-block">
+      <div class="kopf">
+        <span class="titel">${b.titel}</span>
+        <button class="btn btn-gold btn-sm" onclick="kopieren(window._paket[${i}].text)">📋 Kopieren</button>
+      </div>
+      <div class="inhalt">${esc(b.text)}</div>
+    </div>`).join('');
+}
+
+/* ---------- Helfer ---------- */
+function kopieren(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>toast('Kopiert ✔')).catch(()=>fallbackKopieren(text));
+  } else { fallbackKopieren(text); }
+}
+function fallbackKopieren(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  try{ document.execCommand('copy'); toast('Kopiert ✔'); }catch(e){ alert('Kopieren nicht möglich – bitte manuell markieren.'); }
+  document.body.removeChild(ta);
+}
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1800);
+}
+function esc(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ---------- Start ---------- */
+produktListeRendern();
+</script>
+</body>
+</html>
