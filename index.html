@@ -76,6 +76,15 @@
   section.active{display:block;animation:fadeIn .25s ease}
   @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion: reduce){section.active{animation:none}}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  .fcard{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+  .fcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .fcard-name{font-family:'Sora',sans-serif;font-weight:700;font-size:15px}
+  .ftag{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(245,197,66,.15);color:var(--gold);white-space:nowrap}
+  .fmeta{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 8px;font-size:13px;color:var(--muted)}
+  .fmeta b{color:var(--text)}
+  .fwarum{font-size:14px;margin-bottom:10px}
+  .fehler{background:rgba(255,92,124,.08);border:1px solid rgba(255,92,124,.35);border-radius:12px;padding:16px 18px;font-size:14px}
 
   .card{
     background:var(--surface);
@@ -239,11 +248,66 @@
 </header>
 
 <nav>
-  <button class="active" data-tab="produkte" onclick="zeigeTab('produkte')">💰 Produkte</button>
+  <button class="active" data-tab="finder" onclick="zeigeTab('finder')">🔍 Produktfinder</button>
+  <button data-tab="produkte" onclick="zeigeTab('produkte')">💰 Produkte</button>
   <button data-tab="paket" onclick="zeigeTab('paket')">🚀 Promo-Paket</button>
 </nav>
 
 <main>
+
+<!-- ============ TAB: FINDER ============ -->
+<section id="tab-finder" class="active">
+  <div class="card">
+    <h2>Produkte finden</h2>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button class="mode-btn active" id="mode-problem" onclick="setMode('problem')" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--gold);background:rgba(245,197,66,.14);color:var(--gold);font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;">🎯 Problem lösen</button>
+      <button class="mode-btn" id="mode-bestseller" onclick="setMode('bestseller')" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);color:var(--muted);font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;">🔥 Verkaufsstarke Produkte</button>
+    </div>
+    <label id="finderLabel" for="problemInput">Welches Problem soll gelöst werden?</label>
+    <textarea id="problemInput" placeholder="z. B. Menschen wollen abends leichter einschlafen, ohne Tabletten&#10;oder: Katzenbesitzer suchen eine einfache Lösung gegen Katzenhaare auf dem Sofa" style="min-height:80px"></textarea>
+    <div class="row">
+      <div>
+        <label for="fPlattform">Plattform-Wunsch</label>
+        <select id="fPlattform">
+          <option value="egal">Egal — alle prüfen</option>
+          <option value="Digistore24">Nur Digistore24 (digital)</option>
+          <option value="Amazon">Nur Amazon (physisch)</option>
+          <option value="TikTok Shop">Nur TikTok Shop (physisch)</option>
+        </select>
+      </div>
+      <div>
+        <label for="fArt">Produktart</label>
+        <select id="fArt">
+          <option value="egal">Egal</option>
+          <option value="digital">Digital (Kurs, E-Book, Tool)</option>
+          <option value="physisch">Physisch (Gegenstand)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-gold" id="sucheBtn" onclick="sucheProdukte()">🔍 Produkte finden</button>
+  </div>
+
+  <div class="scan" id="scanBox" style="display:none;align-items:center;gap:16px;padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;">
+    <div style="position:relative;width:44px;height:44px;flex-shrink:0;">
+      <svg viewBox="0 0 52 52" style="width:100%;height:100%">
+        <circle cx="26" cy="26" r="24" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+        <circle cx="26" cy="26" r="16" fill="none" stroke="var(--line)" stroke-width="1"/>
+        <g style="transform-origin:50% 50%;animation:spin 1.6s linear infinite">
+          <line x1="26" y1="26" x2="26" y2="2" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <div id="scanText" style="font-weight:700;color:var(--gold);font-size:13px">Web wird durchsucht…</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">Das kann 20–40 Sekunden dauern</div>
+    </div>
+  </div>
+
+  <div id="resultBox">
+    <div class="leer">Beschreib oben ein Problem oder eine Nische, dann sucht die KI live nach passenden Produkten.</div>
+  </div>
+  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:16px">Ergebnisse stammen aus einer Live-Recherche — prüfe Preis, Provision und Verfügbarkeit vor der Bewerbung immer noch einmal selbst.</p>
+</section>
 
 <!-- ============ TAB: PRODUKTE ============ -->
 <section id="tab-produkte">
@@ -336,7 +400,122 @@ function zeigeTab(name){
   document.querySelector('nav button[data-tab="'+name+'"]').classList.add('active');
   if(name==='paket') produktDropdownFuellen();
 }
-document.getElementById('tab-produkte').classList.add('active');
+
+/* ---------- Produktfinder ---------- */
+let aktMode = 'problem';
+const scanTexte = ['Digistore24 wird durchsucht…','Amazon wird geprüft…','Marktplätze werden verglichen…','Passende Angebote werden bewertet…'];
+let scanInterval = null;
+let gefundeneProdukte = [];
+
+function setMode(mode){
+  aktMode = mode;
+  const pBtn = document.getElementById('mode-problem');
+  const bBtn = document.getElementById('mode-bestseller');
+  const label = document.getElementById('finderLabel');
+  const input = document.getElementById('problemInput');
+  [pBtn,bBtn].forEach(b=>{ b.style.borderColor='var(--line)'; b.style.background='var(--surface2)'; b.style.color='var(--muted)'; });
+  if(mode==='problem'){
+    pBtn.style.borderColor='var(--gold)'; pBtn.style.background='rgba(245,197,66,.14)'; pBtn.style.color='var(--gold)';
+    label.textContent = 'Welches Problem soll gelöst werden?';
+    input.placeholder = 'z. B. Menschen wollen abends leichter einschlafen, ohne Tabletten\noder: Katzenbesitzer suchen eine einfache Lösung gegen Katzenhaare auf dem Sofa';
+  } else {
+    bBtn.style.borderColor='var(--gold)'; bBtn.style.background='rgba(245,197,66,.14)'; bBtn.style.color='var(--gold)';
+    label.textContent = 'Nische oder Thema (optional)';
+    input.placeholder = 'z. B. Gesundheit, Beauty, Survival, Online-Business, Haustiere\noder leer lassen für alle Nischen';
+  }
+}
+
+async function sucheProdukte(){
+  const problem = document.getElementById('problemInput').value.trim();
+  if(aktMode==='problem' && !problem){ alert('Bitte kurz beschreiben, welches Problem gelöst werden soll.'); return; }
+  const plattform = document.getElementById('fPlattform').value;
+  const art = document.getElementById('fArt').value;
+
+  const btn = document.getElementById('sucheBtn');
+  btn.disabled = true;
+  const scanBox = document.getElementById('scanBox');
+  scanBox.style.display = 'flex';
+  document.getElementById('resultBox').innerHTML = '';
+  let scanIdx = 0;
+  document.getElementById('scanText').textContent = scanTexte[0];
+  scanInterval = setInterval(()=>{ scanIdx=(scanIdx+1)%scanTexte.length; document.getElementById('scanText').textContent = scanTexte[scanIdx]; }, 3000);
+
+  try{
+    let systemPrompt, userMsg;
+    if(aktMode==='problem'){
+      systemPrompt = 'Du bist ein Produktrecherche-Assistent fuer eine deutsche Affiliate-Marketerin. Die Nutzerin beschreibt ein Problem oder Thema. Suche aktiv im Web nach 3 bis 5 konkreten, real existierenden Produkten oder Angeboten, die dieses Problem loesen und fuer die es ein Partner- oder Affiliate-Programm gibt (z. B. Digistore24, Amazon PartnerNet, TikTok Shop, ClickBank, oder der Hersteller direkt). Bevorzuge Angebote mit erkennbarem Partnerprogramm. Antworte AUSSCHLIESSLICH mit einem JSON-Array, ohne Markdown-Codeblock, ohne Einleitung, ohne Erklaerung davor oder danach. Jedes Element hat genau diese Felder: name (String), plattform (String), preis (String inkl. Waehrung, oder "unbekannt"), provision (String, z. B. "40%" oder "unbekannt"), warum (ein kurzer Satz), link (echte gefundene URL, sonst leerer String). Nenne ausschliesslich tatsaechlich auffindbare, aktuelle Angebote, niemals erfundene Produkte.';
+      userMsg = 'Problem/Thema: ' + problem;
+    } else {
+      systemPrompt = 'Du bist ein Produktrecherche-Assistent fuer eine deutsche Affiliate-Marketerin, die aktuell verkaufsstarke Produkte zum Bewerben sucht. Suche aktiv im Web nach 3 bis 5 real existierenden, gerade gut verkaufenden bzw. stark nachgefragten Produkten mit Partner- oder Affiliate-Programm. Bevorzuge Angebote mit hoher Provision und erkennbarer aktueller Nachfrage. Antworte AUSSCHLIESSLICH mit einem JSON-Array, ohne Markdown-Codeblock, ohne Einleitung, ohne Erklaerung davor oder danach. Jedes Element hat genau diese Felder: name (String), plattform (String), preis (String inkl. Waehrung, oder "unbekannt"), provision (String), warum (ein kurzer Satz), link (echte gefundene URL, sonst leerer String). Nenne ausschliesslich tatsaechlich auffindbare, aktuelle Angebote, niemals erfundene Produkte.';
+      userMsg = problem ? ('Nische/Thema: ' + problem) : 'Keine bestimmte Nische — branchenuebergreifend aktuell verkaufsstarke Angebote finden.';
+    }
+    if(plattform!=='egal') userMsg += '. Plattform-Wunsch: ' + plattform;
+    if(art!=='egal') userMsg += '. Produktart: ' + art;
+
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model:"claude-sonnet-4-6",
+        max_tokens:1000,
+        system: systemPrompt,
+        messages:[{role:"user", content:userMsg}],
+        tools:[{type:"web_search_20250305", name:"web_search"}]
+      })
+    });
+    if(!response.ok) throw new Error('HTTP ' + response.status);
+    const data = await response.json();
+    const textResponses = data.content.filter(b=>b.type==="text").map(b=>b.text).join('\n');
+    const jsonMatch = textResponses.match(/\[[\s\S]*\]/);
+    if(!jsonMatch) throw new Error('Keine strukturierte Antwort erhalten');
+    gefundeneProdukte = JSON.parse(jsonMatch[0]);
+    renderFinderErgebnisse();
+  }catch(err){
+    document.getElementById('resultBox').innerHTML = '<div class="fehler"><b>Suche fehlgeschlagen.</b><br>'+esc(err.message)+' — versuch es gleich nochmal, oder formuliere es etwas anders.</div>';
+  }
+
+  clearInterval(scanInterval);
+  scanBox.style.display = 'none';
+  btn.disabled = false;
+}
+
+function renderFinderErgebnisse(){
+  const box = document.getElementById('resultBox');
+  if(!gefundeneProdukte.length){
+    box.innerHTML = '<div class="leer">Keine passenden Angebote gefunden. Versuch es mit einer anderen Formulierung.</div>';
+    return;
+  }
+  box.innerHTML = gefundeneProdukte.map((p,i)=>`
+    <div class="fcard">
+      <div class="fcard-top">
+        <span class="fcard-name">${esc(p.name)}</span>
+        <span class="ftag">${esc(p.plattform||'unbekannt')}</span>
+      </div>
+      <div class="fmeta">
+        <span>Preis: <b>${esc(p.preis||'unbekannt')}</b></span>
+        <span>Provision: <b>${esc(p.provision||'unbekannt')}</b></span>
+      </div>
+      <div class="fwarum">${esc(p.warum||'')}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-gold btn-sm" onclick="produktUebernehmen(${i})">→ Für Promo-Paket übernehmen</button>
+        ${p.link ? `<a href="${esc(p.link)}" target="_blank" rel="noopener" style="color:var(--gruen);font-size:13px;text-decoration:none;align-self:center">Zur Seite ↗</a>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function produktUebernehmen(i){
+  const p = gefundeneProdukte[i];
+  zeigeTab('produkte');
+  document.getElementById('pName').value = p.name || '';
+  const provZahl = parseFloat((p.provision||'').replace('%','').replace(',','.'));
+  const preisZahl = parseFloat((p.preis||'').replace(/[^\d,\.]/g,'').replace(',','.'));
+  document.getElementById('pPreis').value = isNaN(preisZahl) ? '' : preisZahl;
+  document.getElementById('pProvision').value = isNaN(provZahl) ? '' : provZahl;
+  document.getElementById('pVendor').value = p.plattform || '';
+  proviAnzeigen();
+  toast('Produkt übernommen — jetzt Link, Zielgruppe & Nutzen ergänzen');
+  document.getElementById('pLink').focus();
+}
 
 /* ---------- Provisionsrechner ---------- */
 function proviAnzeigen(){
