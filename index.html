@@ -3,22 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Launch-Promoter</title>
+<title>TikPromo Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0A0F1E;
-    --surface:#111830;
-    --surface2:#182140;
-    --line:#26305A;
-    --text:#F4F5F9;
-    --muted:#8C94B8;
-    --gold:#F5C542;
-    --goldhell:#FFDD7A;
-    --gruen:#2EE6A8;
-    --rot:#FF5C7C;
+    --bg:#0B0D12;
+    --surface:#14171F;
+    --surface2:#1B1F2A;
+    --line:#262B38;
+    --text:#F2F3F5;
+    --muted:#8A90A0;
+    --cyan:#25F4EE;
+    --pink:#FE2C55;
+    --amber:#FFB020;
+    --gold:#FFB020;
+    --goldhell:#FFD066;
+    --gruen:#25F4EE;
     --radius:14px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -31,18 +33,17 @@
     min-height:100vh;
   }
   header{
-    padding:30px 20px 18px;
+    padding:28px 20px 18px;
     text-align:center;
     border-bottom:1px solid var(--line);
-    background:radial-gradient(ellipse 70% 100% at 50% 0%, rgba(245,197,66,.08), transparent);
   }
   h1{
-    font-family:'Sora',sans-serif;
-    font-weight:800;
-    font-size:clamp(24px,5vw,36px);
-    letter-spacing:.3px;
+    font-family:'Unbounded',sans-serif;
+    font-weight:900;
+    font-size:clamp(24px,5vw,38px);
+    letter-spacing:.5px;
+    text-shadow:-3px 0 var(--cyan), 3px 0 var(--pink);
   }
-  h1 .gold{color:var(--gold)}
   header p{color:var(--muted);margin-top:6px;font-size:13px}
   nav{
     display:flex;
@@ -67,24 +68,15 @@
   }
   nav button:hover{color:var(--text)}
   nav button.active{
-    color:#0A0F1E;
-    background:linear-gradient(90deg,var(--gold),var(--goldhell));
+    color:#0B0D12;
+    background:linear-gradient(90deg,var(--cyan),#7ef9f4);
     border-color:transparent;
   }
-  main{max-width:880px;margin:0 auto;padding:22px 16px 80px}
+  main{max-width:860px;margin:0 auto;padding:22px 16px 80px}
   section{display:none}
   section.active{display:block;animation:fadeIn .25s ease}
   @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion: reduce){section.active{animation:none}}
-  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-  .fcard{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
-  .fcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-  .fcard-name{font-family:'Sora',sans-serif;font-weight:700;font-size:15px}
-  .ftag{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(245,197,66,.15);color:var(--gold);white-space:nowrap}
-  .fmeta{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 8px;font-size:13px;color:var(--muted)}
-  .fmeta b{color:var(--text)}
-  .fwarum{font-size:14px;margin-bottom:10px}
-  .fehler{background:rgba(255,92,124,.08);border:1px solid rgba(255,92,124,.35);border-radius:12px;padding:16px 18px;font-size:14px}
 
   .card{
     background:var(--surface);
@@ -94,11 +86,12 @@
     margin-bottom:16px;
   }
   h2{
-    font-family:'Sora',sans-serif;
+    font-family:'Unbounded',sans-serif;
     font-weight:700;
     font-size:18px;
     margin-bottom:14px;
   }
+  h3{font-size:15px;font-weight:700;margin-bottom:8px}
   label{
     display:block;
     font-size:13px;
@@ -117,7 +110,7 @@
     font-size:15px;
   }
   input:focus,select:focus,textarea:focus{
-    outline:2px solid var(--gold);
+    outline:2px solid var(--cyan);
     outline-offset:1px;
     border-color:transparent;
   }
@@ -138,11 +131,12 @@
     transition:transform .1s;
   }
   .btn:active{transform:scale(.97)}
-  .btn-gold{background:linear-gradient(90deg,var(--gold),var(--goldhell));color:#0A0F1E}
+  .btn-primary{background:linear-gradient(90deg,var(--cyan),#5df6f0);color:#0B0D12}
+  .btn-pink{background:linear-gradient(90deg,var(--pink),#ff5c7c);color:#fff}
   .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
   .btn-sm{padding:7px 14px;font-size:13px;margin-top:0}
 
-  .provi{
+  .ampel{
     display:flex;
     align-items:center;
     gap:10px;
@@ -151,16 +145,15 @@
     margin-top:14px;
     font-weight:600;
     font-size:14px;
-    background:rgba(46,230,168,.07);
-    border:1px solid rgba(46,230,168,.3);
   }
-  .provi .betrag{
-    font-family:'Sora',sans-serif;
-    font-weight:800;
-    font-size:20px;
-    color:var(--gruen);
-  }
-  .provi small{display:block;font-weight:400;color:var(--muted)}
+  .ampel .dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+  .ampel.gut{background:rgba(37,244,238,.08);border:1px solid rgba(37,244,238,.35)}
+  .ampel.gut .dot{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+  .ampel.mittel{background:rgba(255,176,32,.08);border:1px solid rgba(255,176,32,.35)}
+  .ampel.mittel .dot{background:var(--amber)}
+  .ampel.schlecht{background:rgba(254,44,85,.08);border:1px solid rgba(254,44,85,.35)}
+  .ampel.schlecht .dot{background:var(--pink)}
+  .ampel small{display:block;font-weight:400;color:var(--muted);margin-top:2px}
 
   .produkt{
     display:flex;
@@ -177,36 +170,60 @@
   .produkt .info{flex:1;min-width:200px}
   .produkt .name{font-weight:700}
   .produkt .meta{font-size:13px;color:var(--muted);margin-top:2px}
-  .produkt .meta .gruen{color:var(--gruen);font-weight:700}
+  .badge{
+    display:inline-block;
+    font-size:12px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:999px;
+    margin-left:8px;
+    vertical-align:middle;
+  }
+  .badge.gut{background:rgba(37,244,238,.15);color:var(--cyan)}
+  .badge.mittel{background:rgba(255,176,32,.15);color:var(--amber)}
+  .badge.schlecht{background:rgba(254,44,85,.15);color:var(--pink)}
 
-  .paket-block{
+  .skript-output{
     background:var(--surface2);
     border:1px solid var(--line);
     border-radius:12px;
     padding:18px;
     margin-top:16px;
+    white-space:pre-wrap;
+    font-size:15px;
+    line-height:1.7;
   }
-  .paket-block .kopf{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    margin-bottom:10px;
-    flex-wrap:wrap;
-  }
-  .paket-block .titel{
-    font-family:'Sora',sans-serif;
+  .skript-output .abschnitt{
+    font-family:'Unbounded',sans-serif;
+    font-size:11px;
     font-weight:700;
-    font-size:14px;
-    color:var(--gold);
-    letter-spacing:.5px;
+    letter-spacing:1.5px;
     text-transform:uppercase;
+    color:var(--pink);
+    display:block;
+    margin:14px 0 4px;
   }
-  .paket-block .inhalt{white-space:pre-wrap;line-height:1.7;font-size:15px}
+  .skript-output .abschnitt:first-child{margin-top:0}
+  .skript-output .abschnitt.cyan{color:var(--cyan)}
+
+  .archiv-item{
+    background:var(--surface2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:10px;
+  }
+  .archiv-item .kopf{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .archiv-item .titel{font-weight:700}
+  .archiv-item .datum{font-size:12px;color:var(--muted)}
+  .status-select{width:auto;padding:6px 10px;font-size:13px;border-radius:8px}
+  .archiv-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:8px}
+  details .skript-output{margin-top:10px}
 
   .hinweis{
-    background:rgba(245,197,66,.06);
-    border:1px solid rgba(245,197,66,.25);
+    background:rgba(254,44,85,.06);
+    border:1px solid rgba(254,44,85,.25);
     border-radius:12px;
     padding:14px 16px;
     font-size:13px;
@@ -220,8 +237,8 @@
     bottom:24px;
     left:50%;
     transform:translateX(-50%);
-    background:var(--gold);
-    color:#0A0F1E;
+    background:var(--cyan);
+    color:#0B0D12;
     font-weight:700;
     padding:12px 24px;
     border-radius:999px;
@@ -238,24 +255,42 @@
     padding:20px;
     border-top:1px solid var(--line);
   }
+
+  /* ---- Produktfinder & Promo-Paket ---- */
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  .btn-gold{background:linear-gradient(90deg,var(--gold),var(--goldhell));color:#0B0D12}
+  .fcard{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+  .fcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .fcard-name{font-family:'Sora',sans-serif;font-weight:700;font-size:15px}
+  .ftag{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(255,176,32,.15);color:var(--gold);white-space:nowrap}
+  .fmeta{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 8px;font-size:13px;color:var(--muted)}
+  .fmeta b{color:var(--text)}
+  .fwarum{font-size:14px;margin-bottom:10px}
+  .fehler{background:rgba(254,44,85,.08);border:1px solid rgba(254,44,85,.35);border-radius:12px;padding:16px 18px;font-size:14px}
+  .paket-block{background:var(--surface2);border:1px solid var(--line);border-radius:12px;margin-bottom:14px;overflow:hidden}
+  .paket-block .kopf{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .paket-block .titel{font-family:'Sora',sans-serif;font-weight:700;font-size:14px}
+  .paket-block .inhalt{padding:14px 16px;font-size:14px;white-space:pre-wrap;line-height:1.55}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Launch<span class="gold">-</span>Promoter</h1>
-  <p>Digitale Affiliate-Produkte erfassen &middot; komplettes Promo-Paket auf Knopfdruck &middot; Video, Facebook, E-Mail, Pinterest</p>
+  <h1>Promo-Zentrale</h1>
+  <p>Eigene Bücher, Tools &amp; Affiliate-Produkte &middot; Produktfinder &middot; TikTok-Skripte &middot; Promo-Paket für Video, Facebook, E-Mail &amp; Pinterest</p>
 </header>
 
 <nav>
   <button class="active" data-tab="finder" onclick="zeigeTab('finder')">🔍 Produktfinder</button>
-  <button data-tab="produkte" onclick="zeigeTab('produkte')">💰 Produkte</button>
+  <button data-tab="produkte" onclick="zeigeTab('produkte')">📦 Produkte</button>
+  <button data-tab="generator" onclick="zeigeTab('generator')">🎵 TikTok-Skripte</button>
   <button data-tab="paket" onclick="zeigeTab('paket')">🚀 Promo-Paket</button>
+  <button data-tab="archiv" onclick="zeigeTab('archiv')">✅ Meine Skripte</button>
 </nav>
 
 <main>
 
-<!-- ============ TAB: FINDER ============ -->
+<!-- ============ TAB: PRODUKTE ============ -->
 <section id="tab-finder" class="active">
   <div class="card" id="keyCard">
     <h2>🔑 Claude API-Schlüssel</h2>
@@ -321,56 +356,148 @@
 <!-- ============ TAB: PRODUKTE ============ -->
 <section id="tab-produkte">
   <div class="card">
-    <h2>Neues Affiliate-Produkt anlegen</h2>
+    <h2>Neues Produkt bewerten</h2>
+    <label for="pTyp">Was möchtest du bewerben?</label>
+    <select id="pTyp" onchange="typWechsel()">
+      <option value="buch">📚 Mein Buch (Amazon)</option>
+      <option value="tool">🛠️ Mein Tool / digitales Produkt (Gumroad)</option>
+      <option value="freebie">🎁 Mein Freebie / meine Landingpage</option>
+      <option value="affiliate">🛒 Affiliate-Produkt (TikTok Shop, Digistore24, Amazon …)</option>
+    </select>
     <label for="pName">Produktname</label>
-    <input id="pName" type="text" placeholder="z. B. TikFluencer">
-    <div class="row">
-      <div>
-        <label for="pVendor">Anbieter / Vendor</label>
-        <input id="pVendor" type="text" placeholder="z. B. Ralf Schmitz">
-      </div>
-      <div>
-        <label for="pLaunch">Launch- / Aktionsdatum (optional)</label>
-        <input id="pLaunch" type="text" placeholder="z. B. 21.07.2026">
-      </div>
-    </div>
+    <input id="pName" type="text" placeholder="z. B. Gemüseschneider 14-in-1">
     <div class="row">
       <div>
         <label for="pPreis">Preis (€)</label>
-        <input id="pPreis" type="number" step="0.01" min="0" placeholder="497">
+        <input id="pPreis" type="number" step="0.01" min="0" placeholder="29,99">
       </div>
-      <div>
+      <div id="provisionFeld">
         <label for="pProvision">Provision (%)</label>
-        <input id="pProvision" type="number" step="0.1" min="0" placeholder="50">
+        <input id="pProvision" type="number" step="0.1" min="0" placeholder="15">
       </div>
     </div>
-    <label for="pLink">Dein Affiliate-Link</label>
-    <input id="pLink" type="text" placeholder="https://www.digistore24.com/redir/...">
-    <label for="pZielgruppe">Zielgruppe (kurz)</label>
-    <input id="pZielgruppe" type="text" placeholder="z. B. Einsteiger, die mit KI und TikTok Geld verdienen wollen">
-    <label for="pNutzen">Die 3 stärksten Nutzen für den Käufer (einer pro Zeile)</label>
-    <textarea id="pNutzen" placeholder="ohne eigenes Gesicht vor der Kamera Geld verdienen&#10;Schritt-für-Schritt-Anleitung, kein Vorwissen nötig&#10;fertige Skript-Vorlagen und Prompt-Bibliothek inklusive"></textarea>
+    <div class="row">
+      <div>
+        <label for="pKategorie">Kategorie</label>
+        <select id="pKategorie"></select>
+      </div>
+      <div>
+        <label for="pZielgruppe">Zielgruppe (kurz)</label>
+        <input id="pZielgruppe" type="text" placeholder="z. B. alle, die wenig Zeit zum Kochen haben">
+      </div>
+    </div>
+    <label for="pLink">Produkt-Link (Amazon, Gumroad oder dein Affiliate-Link — optional)</label>
+    <input id="pLink" type="text" placeholder="https://…">
+    <label for="pVorteile">Die 3 stärksten Vorteile (einer pro Zeile)</label>
+    <textarea id="pVorteile" placeholder="spart 20 Minuten pro Mahlzeit&#10;spülmaschinenfest&#10;ersetzt 5 andere Küchengeräte"></textarea>
 
-    <div id="proviBox"></div>
+    <div id="testerBlock">
+    <h3 style="margin-top:20px">🔍 Produkt-Tester – 5 schnelle Fragen</h3>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:4px">Beantworte die Fragen mit dem Marktplatz vor Augen – die Ampel rechnet sie mit ein.</p>
+    <div class="row">
+      <div>
+        <label for="t1">Kann man es im Video gut zeigen oder erklären?</label>
+        <select id="t1" class="tester"><option value="">– keine Angabe –</option><option value="ja">Ja</option><option value="nein">Nein</option></select>
+      </div>
+      <div>
+        <label for="t2">Löst es ein Alltagsproblem oder hat einen Wow-Effekt?</label>
+        <select id="t2" class="tester"><option value="">– keine Angabe –</option><option value="ja">Ja</option><option value="nein">Nein</option></select>
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="t3">Hat es im Marktplatz schon gute Verkäufe &amp; Bewertungen?</label>
+        <select id="t3" class="tester"><option value="">– keine Angabe –</option><option value="ja">Ja</option><option value="nein">Nein</option></select>
+      </div>
+      <div>
+        <label for="t4">Ist es das ganze Jahr über interessant (nicht nur saisonal)?</label>
+        <select id="t4" class="tester"><option value="">– keine Angabe –</option><option value="ja">Ja</option><option value="nein">Nein</option></select>
+      </div>
+    </div>
+    <label for="t5">Würdest du es selbst kaufen oder verschenken?</label>
+    <select id="t5" class="tester"><option value="">– keine Angabe –</option><option value="ja">Ja</option><option value="nein">Nein</option></select>
+    </div>
 
-    <button class="btn btn-gold" onclick="produktSpeichern()">Produkt speichern</button>
+    <div id="ampelBox"></div>
+
+    <button class="btn btn-primary" onclick="produktSpeichern()">Produkt bewerten &amp; speichern</button>
   </div>
 
   <div class="card">
-    <h2>Meine Affiliate-Produkte</h2>
+    <h2>Meine Produktliste</h2>
     <div id="produktListe"></div>
   </div>
 </section>
 
+<!-- ============ TAB: GENERATOR ============ -->
+<section id="tab-generator">
+  <div class="hinweis">
+    <strong>Denk dran:</strong> Beim Hochladen auf TikTok das Video als KI-generiert kennzeichnen (Pflicht) und den Produktlink aus dem Affiliate-Center anhängen.
+  </div>
+  <div class="card">
+    <h2>Skript erstellen</h2>
+    <label for="gProdukt">Produkt auswählen</label>
+    <select id="gProdukt" onchange="produktWechselAnzeige()"></select>
+    <p style="color:var(--muted);font-size:13px;margin-top:6px">Der Schluss des Skripts passt sich automatisch an: Buch → Amazon, Tool → Link in Bio, Freebie → gratis, Affiliate → Warenkorb.</p>
+    <label for="gLaenge">Videolänge</label>
+    <select id="gLaenge">
+      <option value="30">ca. 30 Sekunden</option>
+      <option value="45" selected>ca. 45 Sekunden</option>
+      <option value="60">ca. 60 Sekunden</option>
+    </select>
+
+    <div id="altStilBox" class="row" style="margin-top:12px">
+      <div>
+        <label for="gStil">Skript-Stil</label>
+        <select id="gStil">
+          <option value="problem">Problem &amp; Lösung</option>
+          <option value="gruende">Top-3-Gründe</option>
+          <option value="story">Kurze Story</option>
+          <option value="frage">Frage-Hook</option>
+          <option value="geheimtipp">Geheimtipp</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:8px">
+        <button class="btn btn-pink" onclick="skriptGenerieren()">🎬 Skript generieren</button>
+        <button class="btn btn-ghost" onclick="skriptGenerieren()" title="Erzeugt eine neue Variante">🔄</button>
+      </div>
+    </div>
+
+    <div id="version31Box" style="display:none;margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <strong style="font-size:13px;color:var(--muted)">Content-Varianten · <span id="blockRange"></span></strong>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" onclick="blockNavigieren(-1)">← Zurück</button>
+          <button class="btn btn-ghost btn-sm" onclick="blockNavigieren(1)">Weiter →</button>
+        </div>
+      </div>
+      <div id="blockListe"></div>
+    </div>
+
+    <div id="skriptBox"></div>
+  </div>
+</section>
+
+<!-- ============ TAB: ARCHIV ============ -->
+<section id="tab-archiv">
+  <div class="card">
+    <h2>Meine Skripte &amp; Video-Status</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:14px">Für deinen Produktionstag: Skript kopieren → in HeyGen einfügen → Video runterladen → in TikTok Studio einplanen → Status umstellen.</p>
+    <div id="archivListe"></div>
+  </div>
+</section>
+
+
 <!-- ============ TAB: PROMO-PAKET ============ -->
 <section id="tab-paket">
   <div class="hinweis">
-    <strong>Denk dran:</strong> Affiliate-Posts immer als Werbung kennzeichnen (z. B. „Werbung" oder „Affiliate-Link") – das ist in Deutschland Pflicht. Avatar-Videos auf TikTok als KI-Inhalt markieren.
+    <strong>Denk dran:</strong> Affiliate-Posts immer als Werbung kennzeichnen (z. B. „Werbung" oder „Affiliate-Link") – bei eigenen Produkten ist das nicht nötig. Avatar-Videos auf TikTok als KI-Inhalt markieren.
   </div>
   <div class="card">
     <h2>Promo-Paket generieren</h2>
-    <label for="gProdukt">Produkt auswählen</label>
-    <select id="gProdukt"></select>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:10px">Erstellt zum gewählten Produkt: HeyGen-Videoskript, 3 Facebook-Posts, eine E-Mail für MailerLite und einen Pinterest-Pin. Die Texte passen sich automatisch an: eigenes Produkt oder Affiliate.</p>
+    <label for="ppProdukt">Produkt auswählen</label>
+    <select id="ppProdukt"></select>
     <button class="btn btn-gold" onclick="paketGenerieren()">🚀 Komplettes Paket erstellen</button>
     <button class="btn btn-ghost" onclick="paketGenerieren()" title="Erzeugt neue Varianten">🔄 Neue Varianten</button>
     <div id="paketBox"></div>
@@ -381,10 +508,10 @@
 
 <div class="toast" id="toast">Kopiert ✔</div>
 
-<footer>Launch-Promoter &middot; privates Arbeitstool &middot; Daten werden nur lokal in deinem Browser gespeichert</footer>
+<footer>Promo-Zentrale &middot; privates Arbeitstool &middot; Daten werden nur lokal in deinem Browser gespeichert</footer>
 
 <script>
-/* ---------- Sicherer Speicher ---------- */
+/* ---------- Sicherer Speicher (localStorage mit Fallback) ---------- */
 const memStore = {};
 function speichern(key, wert){
   try{ localStorage.setItem(key, JSON.stringify(wert)); }
@@ -399,8 +526,977 @@ function laden(key, fallback){
   }
   return fallback;
 }
-let produkte = laden('launchpromoter_produkte', []);
 
+let produkte = laden('tikpromo_produkte', []);
+let skripte  = laden('tikpromo_skripte', []);
+
+/* ---------- Tabs ---------- */
+function zeigeTab(name){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelector('nav button[data-tab="'+name+'"]').classList.add('active');
+  if(name==='generator'){ produktDropdownFuellen(); produktWechselAnzeige(); }
+  if(name==='archiv') archivRendern();
+  if(name==='paket') paketDropdownFuellen();
+}
+
+/* ---------- Produkttyp & Kategorien ---------- */
+const kategorien = {
+  buch:      ['KI & Online-Business','Ratgeber & Sachbuch','Kinderbuch','Roman & Unterhaltung','Sonstiges'],
+  tool:      ['KI- & Content-Tool','Kalender & Planung','Marketing & Verkauf','Sonstiges'],
+  freebie:   ['Guide & Checkliste','Prompts & Vorlagen','Audio','Sonstiges'],
+  affiliate: ['Küche & Haushalt','Beauty & Pflege','Gadgets & Technik','Fitness & Gesundheit','Mode & Accessoires','Haustiere','Sonstiges']
+};
+const typLabels = { buch:'📚 Buch', tool:'🛠️ Tool', freebie:'🎁 Freebie', affiliate:'🛒 Affiliate' };
+
+function aktTyp(){ return document.getElementById('pTyp').value; }
+
+function typWechsel(){
+  const typ = aktTyp();
+  document.getElementById('provisionFeld').style.display = typ==='affiliate' ? '' : 'none';
+  document.getElementById('testerBlock').style.display   = typ==='affiliate' ? '' : 'none';
+  const sel = document.getElementById('pKategorie');
+  sel.innerHTML = kategorien[typ].map(k=>'<option>'+k+'</option>').join('');
+  ampelAnzeigen();
+}
+
+/* ---------- Produktbewertung (Ampel + Produkt-Tester) ---------- */
+const testerNeinGruende = [
+  'Schwer im Video zu zeigen oder zu erklären',
+  'Kein klares Problem und kein Wow-Effekt',
+  'Kaum Verkäufe oder schwache Bewertungen im Marktplatz',
+  'Nur saisonal interessant',
+  'Du würdest es selbst nicht kaufen – das merkt man dem Video an'
+];
+
+function testerAntworten(){
+  return ['t1','t2','t3','t4','t5'].map(id=>{
+    const el = document.getElementById(id);
+    return el ? el.value : '';
+  });
+}
+
+function bewerten(preis, provProzent, antworten){
+  const provEuro = preis * provProzent / 100;
+  const gruende = [];
+  let punkte = 0;
+
+  if(preis >= 20 && preis <= 60){ punkte += 2; }
+  else if(preis > 60 && preis <= 100){ punkte += 1; gruende.push('Preis über 60 € – auf TikTok wird eher spontan gekauft'); }
+  else if(preis < 20){ punkte += 1; gruende.push('Preis unter 20 € – Provision pro Verkauf fällt klein aus'); }
+  else { gruende.push('Preis über 100 € – schwer für Spontankäufe'); }
+
+  if(provProzent >= 15){ punkte += 2; }
+  else if(provProzent >= 10){ punkte += 1; }
+  else { gruende.push('Provision unter 10 % – lohnt sich kaum'); }
+
+  if(provEuro >= 5){ punkte += 2; }
+  else if(provEuro >= 3){ punkte += 1; }
+  else { gruende.push('Weniger als 3 € pro Verkauf'); }
+
+  /* Produkt-Tester einrechnen */
+  let beantwortet = 0, testerPunkte = 0;
+  if(antworten){
+    antworten.forEach((a,i)=>{
+      if(a==='ja'){ testerPunkte++; beantwortet++; }
+      else if(a==='nein'){ beantwortet++; gruende.push(testerNeinGruende[i]); }
+    });
+  }
+
+  let stufe, text;
+  if(beantwortet >= 3){
+    /* Zahlen (max 6) + Tester (max 5) = max 11 */
+    const gesamt = punkte + testerPunkte;
+    if(gesamt >= 8){ stufe='gut'; text='Bewerben – Top-Produkt! (' + gesamt + '/11 Punkten)'; }
+    else if(gesamt >= 5){ stufe='mittel'; text='Kann man testen – aber beobachten (' + gesamt + '/11 Punkten)'; }
+    else { stufe='schlecht'; text='Nicht bewerben – such weiter (' + gesamt + '/11 Punkten)'; }
+  } else {
+    if(punkte >= 5){ stufe='gut'; text='Top-Produkt – lohnt sich!'; }
+    else if(punkte >= 3){ stufe='mittel'; text='Okay – testen, aber beobachten'; }
+    else { stufe='schlecht'; text='Finger weg – such lieber weiter'; }
+  }
+
+  return { stufe, text, provEuro, gruende };
+}
+
+function ampelAnzeigen(){
+  const typ = aktTyp();
+  const box = document.getElementById('ampelBox');
+  if(typ!=='affiliate'){
+    const txt = typ==='freebie'
+      ? 'Dein Freebie – kostenlos für deine Liste. Jede Eintragung zahlt auf dein Business ein.'
+      : 'Dein eigenes Produkt – hier braucht es keine Ampel. Jeder Verkauf zahlt direkt auf dein Business ein.';
+    box.innerHTML = '<div class="ampel gut"><span class="dot"></span><span>'+txt+'</span></div>';
+    return null;
+  }
+  const preis = parseFloat(document.getElementById('pPreis').value);
+  const prov  = parseFloat(document.getElementById('pProvision').value);
+  if(isNaN(preis) || isNaN(prov)){ box.innerHTML=''; return null; }
+  const b = bewerten(preis, prov, testerAntworten());
+  box.innerHTML = `
+    <div class="ampel ${b.stufe}">
+      <span class="dot"></span>
+      <span>${b.text} &middot; ${b.provEuro.toFixed(2).replace('.',',')} € Provision pro Verkauf
+        ${b.gruende.length ? '<small>'+b.gruende.join(' · ')+'</small>' : ''}
+      </span>
+    </div>`;
+  return b;
+}
+document.getElementById('pPreis').addEventListener('input', ampelAnzeigen);
+document.getElementById('pProvision').addEventListener('input', ampelAnzeigen);
+document.querySelectorAll('.tester').forEach(el=>el.addEventListener('change', ampelAnzeigen));
+
+/* ---------- Produkt speichern / Liste ---------- */
+function produktSpeichern(){
+  const typ = aktTyp();
+  const name = document.getElementById('pName').value.trim();
+  let preis = parseFloat(document.getElementById('pPreis').value);
+  let prov = parseFloat(document.getElementById('pProvision').value);
+  const kategorie = document.getElementById('pKategorie').value;
+  const zielgruppe = document.getElementById('pZielgruppe').value.trim();
+  const vorteile = document.getElementById('pVorteile').value.split('\n').map(v=>v.trim()).filter(v=>v);
+  const link = document.getElementById('pLink').value.trim();
+
+  if(!name){ alert('Bitte einen Produktnamen eingeben.'); return; }
+  if(typ==='affiliate'){
+    if(isNaN(preis) || isNaN(prov)){ alert('Bitte Preis und Provision eingeben.'); return; }
+  } else {
+    if(isNaN(preis)) preis = 0;
+    prov = 0;
+  }
+  if(vorteile.length < 1){ alert('Bitte mindestens einen Vorteil eingeben.'); return; }
+
+  let stufe = 'eigen', provEuro = 0;
+  if(typ==='affiliate'){
+    const b = bewerten(preis, prov, testerAntworten());
+    stufe = b.stufe; provEuro = b.provEuro;
+  }
+  produkte.push({ id: Date.now(), typ, name, preis, prov, kategorie, zielgruppe, vorteile, link, stufe, provEuro });
+  speichern('tikpromo_produkte', produkte);
+  produktListeRendern();
+
+  document.getElementById('pName').value='';
+  document.getElementById('pPreis').value='';
+  document.getElementById('pProvision').value='';
+  document.getElementById('pZielgruppe').value='';
+  document.getElementById('pLink').value='';
+  document.getElementById('pVorteile').value='';
+  ['t1','t2','t3','t4','t5'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ampelBox').innerHTML='';
+  toast('Produkt gespeichert ✔');
+}
+
+function produktListeRendern(){
+  const box = document.getElementById('produktListe');
+  if(produkte.length===0){
+    box.innerHTML = '<div class="leer">Noch keine Produkte. Trag dein eigenes Buch, Tool oder Freebie ein – oder such dir im TikTok-Affiliate-Center Produkte raus.</div>';
+    return;
+  }
+  const labels = {gut:'Top', mittel:'Okay', schlecht:'Finger weg'};
+  box.innerHTML = produkte.map(p=>{
+    const typ = p.typ || 'affiliate';
+    const typBadge = '<span class="badge gut">'+typLabels[typ]+'</span>';
+    const ampelBadge = typ==='affiliate' && labels[p.stufe] ? '<span class="badge '+p.stufe+'">'+labels[p.stufe]+'</span>' : '';
+    const preisTxt = p.preis > 0 ? p.preis.toFixed(2).replace('.',',')+' €' : 'gratis';
+    const meta = typ==='affiliate'
+      ? preisTxt+' &middot; '+p.prov+'% = '+p.provEuro.toFixed(2).replace('.',',')+' € pro Verkauf &middot; '+esc(p.kategorie)
+      : preisTxt+' &middot; '+esc(p.kategorie);
+    return `
+    <div class="produkt">
+      <div class="info">
+        <span class="name">${esc(p.name)}</span>
+        ${typBadge}${ampelBadge}
+        <div class="meta">${meta}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary btn-sm" onclick="zumGenerator(${p.id})">Skript →</button>
+        <button class="btn btn-ghost btn-sm" onclick="produktLoeschen(${p.id})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function produktLoeschen(id){
+  if(!confirm('Produkt wirklich löschen?')) return;
+  produkte = produkte.filter(p=>p.id!==id);
+  speichern('tikpromo_produkte', produkte);
+  produktListeRendern();
+}
+
+function zumGenerator(id){
+  zeigeTab('generator');
+  document.getElementById('gProdukt').value = id;
+}
+
+/* ---------- Skript-Generator ---------- */
+function produktDropdownFuellen(){
+  const sel = document.getElementById('gProdukt');
+  if(produkte.length===0){
+    sel.innerHTML = '<option value="">– erst ein Produkt anlegen –</option>';
+    return;
+  }
+  sel.innerHTML = produkte.map(p=>{
+    const typ = p.typ || 'affiliate';
+    const preisTxt = p.preis > 0 ? p.preis.toFixed(2).replace('.',',')+' €' : 'gratis';
+    return `<option value="${p.id}">${typLabels[typ].split(' ')[0]} ${esc(p.name)} (${preisTxt})</option>`;
+  }).join('');
+}
+
+function zufall(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+const hooks = {
+  problem: [
+    'Stopp mal kurz – kennst du das? {gegenteil}',
+    'Ganz ehrlich: {gegenteil} Das nervt einfach.',
+    'Das hier ist für dich, wenn gilt: {ziel}',
+    'Ich dachte immer, sowas gehört einfach dazu. Falsch gedacht.',
+    'Kennst du das – {gegenteil} Genau deshalb gibt es jetzt eine Lösung.',
+    'Kurz gesagt, für wen das hier ist: {ziel}',
+    'Bevor du weiterscrollst: Das hier lohnt sich, wenn auf dich zutrifft: {ziel}'
+  ],
+  gruende: [
+    'Drei Gründe, warum gerade alle über {name} reden.',
+    'Ich gebe dir jetzt 3 Gründe, warum sich {name} lohnt – Nummer 3 hat mich überzeugt.',
+    'Bevor du weiterscrollst: 3 Dinge, die {name} besser macht als alles, was du kennst.',
+    'Perfekt, wenn das hier zu dir passt: {ziel}. Dann gibt es jetzt 3 gute Gründe für {name}.',
+    '{v1} – und das ist nur einer von drei Gründen für {name}.',
+    'Drei Dinge, die ich an {name} richtig gut finde – kurz und ehrlich.'
+  ],
+  story: [
+    'Letzte Woche ist mir was passiert, das musste ich euch zeigen.',
+    'Meine Freundin hat mir davon erzählt – ich war erst skeptisch.',
+    'Ich hab das hier eigentlich nur aus Neugier ausprobiert. Und jetzt?',
+    'Ich hab lange gezögert, bis ich {name} endlich ausprobiert habe.',
+    'Ehrlich gesagt hab ich nicht viel erwartet, als ich mit {name} angefangen habe.',
+    'So richtig überzeugt hat mich das erst, als ich gemerkt habe: {v1}.'
+  ],
+  frage: [
+    'Mal ehrlich, wie oft hattest du das schon: {gegenteil}',
+    'Wusstest du, dass es dafür längst eine Lösung gibt?',
+    'Warum macht das eigentlich nicht jeder so?',
+    'Was würdest du machen, wenn {v1} einfach dazugehören würde?',
+    'Passt das zu dir: {ziel}? Dann wird dir das hier gefallen.'
+  ],
+  geheimtipp: [
+    'Okay, das hier ist noch ein echter Geheimtipp – aber nicht mehr lange.',
+    'Psst – das hier kennt noch fast niemand.',
+    'Ich zeig dir jetzt was, das gerade erst am Start ist.',
+    'Insider-Tipp, wenn das hier zu dir passt: {ziel}',
+    'Das hier sollte eigentlich noch niemand wissen: {v1}.'
+  ]
+};
+
+const ctas = [
+  'Wenn du es ausprobieren willst: Tipp einfach auf den orangenen Warenkorb hier im Video – da findest du {name} direkt. Aber warte nicht zu lange, sowas ist schnell weg.',
+  'Den Link findest du im orangenen Warenkorb unten im Video. Für {preis} € machst du da nichts falsch – schau es dir an!',
+  'Tipp auf den Warenkorb im Video und schau dir {name} selbst an. Und folge mir für mehr Produkte, die wirklich was taugen!',
+  'Alles Weitere findest du über den Warenkorb hier im Video. Und schreib mir in die Kommentare, wie es bei dir funktioniert!'
+];
+
+const freebieCtas = [
+  'Und das Beste: Es kostet dich keinen Cent. Du findest {name} über den Link in meiner Bio – hol es dir gleich, bevor du es vergisst.',
+  'Den Gratis-Download findest du über den Link in meiner Bio. Kostet nichts, bringt viel – und folge mir für mehr solcher Tipps!',
+  'Hol dir {name} kostenlos über den Link in meiner Bio. Und schreib mir in die Kommentare, was du als Erstes damit machst!',
+  'Alles gratis über den Link in meiner Bio – kein Haken, keine Kosten. Und folge mir, damit du die nächsten Tipps nicht verpasst!'
+];
+
+const buchCtas = [
+  '„{name}" ist erhältlich bei Amazon – such einfach nach dem Titel oder nimm den Link in meiner Bio. Und folge mir für mehr davon!',
+  'Du findest „{name}" bei Amazon. Der schnellste Weg: der Link in meiner Bio. Schreib mir gern in die Kommentare, wie es dir gefällt!',
+  'Neugierig geworden? „{name}" gibt es bei Amazon – Link in meiner Bio. Und folge mir, wenn du mehr solche Tipps willst!'
+];
+
+const toolCtas = [
+  'Du bekommst {name} über den Link in meiner Bio – schau es dir an und leg direkt los!',
+  'Alle Infos zu {name} findest du über den Link in meiner Bio. Und schreib mir in die Kommentare, wenn du Fragen hast!',
+  'Hol dir {name} über den Link in meiner Bio – und folge mir für mehr Tools, die dir Arbeit abnehmen!'
+];
+
+/* Kürzt Text an einer Wortgrenze statt mitten im Wort, mit „…" am Ende */
+function wortSlice(text, maxLen){
+  if(!text || text.length <= maxLen) return text || '';
+  let t = text.slice(0, maxLen);
+  const lastSpace = t.lastIndexOf(' ');
+  if(lastSpace > maxLen * 0.5) t = t.slice(0, lastSpace);
+  return t + '…';
+}
+
+/* Nimmt nur den ersten Satz/Satzteil eines (evtl. längeren) Vorteils, für Titel/Hooks */
+function ersterSatzteil(text, maxLen){
+  if(!text) return '';
+  let teil = text.split(/[.!?]/)[0].trim();
+  return wortSlice(teil, maxLen);
+}
+
+/* Reiht mehrere Vorteile sauber als eigene Sätze aneinander, egal ob sie
+   schon einen Punkt haben (ganze Sätze) oder nicht (kurze Stichpunkte) */
+function satzForm(arr){
+  const teile = arr.filter(Boolean).map(s => s.trim().replace(/[.\s]+$/,''));
+  if(!teile.length) return '';
+  return teile.join('. ') + '.';
+}
+
+function beitragErzeugen(p, typ, hook, haupt){
+  const v1 = p.vorteile[0] || '';
+  const kat = p.kategorie || '';
+  let tags;
+  if(typ==='buch'){
+    tags = ['#buchtipp','#ki','#onlinebusiness','#geldverdienenonline','#affiliatemarketing','#fürdich'];
+    if(kat==='Kinderbuch') tags = ['#buchtipp','#kinderbuch','#vorlesen','#geschenkidee','#fürdich'];
+    if(kat==='Roman & Unterhaltung') tags = ['#buchtipp','#lesen','#booktok','#fürdich'];
+    if(kat==='Ratgeber & Sachbuch') tags = ['#buchtipp','#ratgeber','#weiterbildung','#fürdich'];
+  } else if(typ==='tool'){
+    tags = ['#kitools','#produktivität','#onlinebusiness','#contentcreator','#fürdich'];
+  } else if(typ==='freebie'){
+    tags = ['#gratis','#ki','#onlinegeldverdienen','#weiterbildung','#fürdich'];
+  } else {
+    const katTags = {
+      'Küche & Haushalt':['#küchenhelfer','#haushaltshacks'],
+      'Beauty & Pflege':['#beauty','#pflegetipps'],
+      'Gadgets & Technik':['#gadgets','#technik'],
+      'Fitness & Gesundheit':['#fitness','#gesundheit'],
+      'Mode & Accessoires':['#fashion','#style'],
+      'Haustiere':['#haustiere','#tierliebe']
+    };
+    tags = ['#tiktokshop', ...(katTags[kat]||['#empfehlung']), '#musthave','#fürdich'];
+  }
+  const ort = typ==='buch' ? 'Erhältlich bei Amazon – Link in der Bio.'
+            : typ==='affiliate' ? 'Direkt über den Warenkorb im Video bestellbar.'
+            : typ==='freebie' ? 'Gratis über den Link in der Bio.'
+            : 'Alle Infos über den Link in der Bio.';
+  const werbung = typ==='affiliate' ? 'Werbung' : 'Werbung (in eigener Sache)';
+  const emojis = ['💡','✨','👀','🔥'];
+  const emoji = zufall(emojis);
+
+  // Beitragstexte leiten sich aus dem TATSÄCHLICHEN Skript ab (Hook + Hauptteil),
+  // damit jede der 31 Varianten auch wirklich unterschiedliche Social-Texte bekommt —
+  // nicht mehr aus einem fest zwischengespeicherten Standardtext.
+  const opener = ersterSatzteil(hook, 90) || (v1 ? v1.charAt(0).toUpperCase()+v1.slice(1) : p.name);
+  const kern = ersterSatzteil(haupt, 130) || v1;
+
+  const tiktok = opener + ' ' + emoji + '\n' + kern + '\n' + p.name + ': ' + ort + '\n' + werbung + '\n\n' + tags.join(' ');
+
+  const ytTitel = wortSlice(p.name + ' – ' + ersterSatzteil(hook, 60), 95);
+  const youtube = 'Titel:\n' + ytTitel + '\n\nBeschreibung:\n' + kern + ' ' + ort + '\n' + werbung + '\n\n#shorts ' + tags.slice(0,3).join(' ');
+
+  // Instagram: fast wie TikTok, aber weniger Hashtags (3-5)
+  const igTags = tags.slice(0,5);
+  const instagram = opener + ' ' + emoji + '\n' + kern + '\n' + p.name + ': ' + ort + '\n' + werbung + '\n\n' + igTags.join(' ');
+
+  // Pinterest: Suchmaschine statt Feed — Titel mit Suchbegriff vorn, sachlichere Beschreibung
+  const pinTitel = wortSlice(p.name + ' – ' + ersterSatzteil(hook, 65), 100);
+  const pinBeschreibung = p.name + ': ' + kern + ' ' + ort + ' ' + werbung + '\n\n' + tags.slice(0,4).join(' ');
+  const pinterest = 'Pin-Titel:\n' + pinTitel + '\n\nPin-Beschreibung:\n' + pinBeschreibung;
+
+  return { tiktok, youtube, instagram, pinterest };
+}
+
+function beitragNeuGenerieren(){
+  const akt = window._skriptAktuell;
+  if(!akt){ return; }
+  const p = produkte.find(x=>x.id===akt.pid);
+  if(!p) return;
+  const typ = p.typ || 'affiliate';
+  const beitrag = beitragErzeugen(p, typ, akt.hook, akt.haupt);
+  akt.tiktok = beitrag.tiktok;
+  akt.youtube = beitrag.youtube;
+  akt.instagram = beitrag.instagram;
+  akt.pinterest = beitrag.pinterest;
+  const bloecke = document.querySelectorAll('#skriptBox .skript-output');
+  bloecke[1].innerHTML = '<span class="abschnitt">📱 TikTok-Beitragstext</span>' + esc(beitrag.tiktok);
+  bloecke[2].innerHTML = '<span class="abschnitt cyan">▶️ YouTube Shorts – Titel &amp; Beschreibung</span>' + esc(beitrag.youtube);
+  bloecke[3].innerHTML = '<span class="abschnitt">📸 Instagram-Beitragstext</span>' + esc(beitrag.instagram);
+  bloecke[4].innerHTML = '<span class="abschnitt cyan">📌 Pinterest-Pin</span>' + esc(beitrag.pinterest);
+  toast('Beitragstexte neu gewürfelt ✔');
+}
+
+/* ---------- 31 Content-Varianten (nur Buch & Tool) ---------- */
+const VERSIONEN31 = [
+  // 1. Problem → Lösung (4)
+  { kategorie:'Problem → Lösung', titel:'Klassisch', bauen:(c)=>({
+    hook:`Kennst du das? Du suchst ewig, bevor du endlich etwas findest, das wirklich hilft.`,
+    haupt:`Genau dafür gibt es ${c.name}. Der Unterschied: ${c.v1}.\nUnd es kann noch mehr: ${c.v2}. Gerade für ${c.ziel} ist das Gold wert.`
+  })},
+  { kategorie:'Problem → Lösung', titel:'Direkt', bauen:(c)=>({
+    hook:`Stopp – bevor du weiterscrollst.`,
+    haupt:`${c.name} löst genau das Problem, das du kennst: ${c.v1}. Und obendrauf: ${c.v2}.`
+  })},
+  { kategorie:'Problem → Lösung', titel:'Mit Frage', bauen:(c)=>({
+    hook:`Wie oft hast du dir schon gewünscht, es gäbe dafür eine einfache Lösung?`,
+    haupt:`Die Antwort heißt ${c.name}. Das Wichtigste: ${c.v1}. Und für ${c.ziel} macht das den entscheidenden Unterschied.`
+  })},
+  { kategorie:'Problem → Lösung', titel:'Emotional', bauen:(c)=>({
+    hook:`Ganz ehrlich: Genau dieses Problem hat mich lange genervt.`,
+    haupt:`Bis ich ${c.name} gefunden habe. ${c.v1} – und plötzlich war es kein Thema mehr. Dazu kommt: ${c.v2}.`
+  })},
+
+  // 2. 3 Gründe (3)
+  { kategorie:'3 Gründe', titel:'Klassisch', bauen:(c)=>({
+    hook:`Drei Gründe, warum sich ${c.name} gerade lohnt.`,
+    haupt:`Grund eins: ${c.v1}.\nGrund zwei: ${c.v2}.\nUnd Grund drei, mein Favorit: ${c.v3}.`
+  })},
+  { kategorie:'3 Gründe', titel:'Nummeriert kurz', bauen:(c)=>({
+    hook:`Drei Dinge, die ${c.name} richtig gut macht.`,
+    haupt:`1. ${c.v1}\n2. ${c.v2}\n3. ${c.v3}\nKurz, klar, fertig.`
+  })},
+  { kategorie:'3 Gründe', titel:'Mit Zahlen-Hook', bauen:(c)=>({
+    hook:`In den nächsten 30 Sekunden bekommst du 3 Gründe für ${c.name}.`,
+    haupt:`${c.v1}. Dazu: ${c.v2}. Und für ${c.ziel} vor allem: ${c.v3}.`
+  })},
+
+  // 3. Storytelling (3)
+  { kategorie:'Storytelling', titel:'Ich-Erfahrung', bauen:(c)=>({
+    hook:`Letzte Woche ist mir etwas passiert, das ich euch zeigen musste.`,
+    haupt:`Ich hab mir ${c.name} geholt – und was soll ich sagen: ${c.v1}. Damit hatte ich nicht gerechnet. Dazu kommt: ${c.v2}.`
+  })},
+  { kategorie:'Storytelling', titel:'Skeptisch-dann-überzeugt', bauen:(c)=>({
+    hook:`Ich war anfangs richtig skeptisch, ehrlich gesagt.`,
+    haupt:`Dann hab ich ${c.name} ausprobiert. ${c.v1} – das war der Moment, wo ich umgedacht habe. Und dann kam noch: ${c.v2}.`
+  })},
+  { kategorie:'Storytelling', titel:'Zeitsprung', bauen:(c)=>({
+    hook:`Vor ein paar Wochen wusste ich noch nicht, dass es sowas gibt.`,
+    haupt:`Heute nutze ich ${c.name} regelmäßig – wegen ${c.v1} und ${c.v2}. Für ${c.ziel} ein echter Unterschied.`
+  })},
+
+  // 4. Mythos vs. Wahrheit (3)
+  { kategorie:'Mythos vs. Wahrheit', titel:'Ein Mythos', bauen:(c)=>({
+    hook:`Ein Mythos, den ich endlich klarstellen will.`,
+    haupt:`Viele denken, sowas wie ${c.name} lohnt sich nicht. Die Wahrheit: ${c.v1}. Und genau deshalb ist es gerade für ${c.ziel} sinnvoll.`
+  })},
+  { kategorie:'Mythos vs. Wahrheit', titel:'Zwei Mythen', bauen:(c)=>({
+    hook:`Zwei Dinge, die die meisten über ${c.name} falsch verstehen.`,
+    haupt:`Mythos eins: es bringt nichts. Wahrheit: ${c.v1}.\nMythos zwei: es lohnt den Aufwand nicht. Wahrheit: ${c.v2}.`
+  })},
+  { kategorie:'Mythos vs. Wahrheit', titel:'Direkter Widerspruch', bauen:(c)=>({
+    hook:`Das hier widerspricht dem, was die meisten glauben.`,
+    haupt:`${c.name} beweist das Gegenteil: ${c.v1}. Und wer zu ${c.ziel} gehört, merkt das sofort.`
+  })},
+
+  // 5. Vorher/Nachher (3)
+  { kategorie:'Vorher/Nachher', titel:'Klassisch', bauen:(c)=>({
+    hook:`Vorher – Nachher. So hat sich das bei mir verändert.`,
+    haupt:`Vorher: viel Aufwand, wenig Ergebnis. Nachher, mit ${c.name}: ${c.v1}. Der Unterschied ist einfach spürbar.`
+  })},
+  { kategorie:'Vorher/Nachher', titel:'Mit Zahl', bauen:(c)=>({
+    hook:`Der Unterschied lässt sich fast beziffern.`,
+    haupt:`Ohne ${c.name}: viel Zeit verschenkt. Mit ${c.name}: ${c.v1}. Dazu noch: ${c.v2}.`
+  })},
+  { kategorie:'Vorher/Nachher', titel:'Alltagsszene', bauen:(c)=>({
+    hook:`Stell dir zwei Versionen von dir vor – vorher und nachher.`,
+    haupt:`Die eine kämpft sich durch, ohne Hilfe. Die andere nutzt ${c.name} und profitiert von ${c.v1}. Für ${c.ziel} ein klarer Fall.`
+  })},
+
+  // 6. FAQ (3)
+  { kategorie:'FAQ', titel:'Häufigste Frage', bauen:(c)=>({
+    hook:`Die Frage, die mir zu ${c.name} am häufigsten gestellt wird.`,
+    haupt:`"Lohnt sich das wirklich?" Kurz gesagt: ja, wegen ${c.v1}. Und weil ${c.v2}.`
+  })},
+  { kategorie:'FAQ', titel:'Skepsis-Frage', bauen:(c)=>({
+    hook:`"Ist das nicht too good to be true?" – diese Frage kommt oft.`,
+    haupt:`Nein. ${c.name} liefert wirklich ${c.v1}. Kein Marketing-Versprechen, sondern genau das.`
+  })},
+  { kategorie:'FAQ', titel:'Preis-Frage', bauen:(c)=>({
+    hook:`"Was kostet das eigentlich?" Gute Frage.`,
+    haupt:`${c.name} kostet ${c.preisTxt} € – und dafür bekommst du ${c.v1}. Für ${c.ziel} ist das mehr als fair.`
+  })},
+
+  // 7. Fehler (3)
+  { kategorie:'Fehler', titel:'Der eine Fehler', bauen:(c)=>({
+    hook:`Der eine Fehler, den fast jeder am Anfang macht.`,
+    haupt:`Man versucht es ohne Hilfe und verliert dabei viel Zeit. ${c.name} verhindert genau das – durch ${c.v1}.`
+  })},
+  { kategorie:'Fehler', titel:'3 Fehler kurz', bauen:(c)=>({
+    hook:`3 Fehler, die dich unnötig Zeit kosten.`,
+    haupt:`Kein System zu haben. Alles allein zu machen. Und das Falsche zuerst anzugehen. ${c.name} löst alle drei auf einmal – durch ${c.v1}.`
+  })},
+  { kategorie:'Fehler', titel:'Fehler den ich selbst gemacht habe', bauen:(c)=>({
+    hook:`Diesen Fehler hab ich selbst gemacht, bevor ich es besser wusste.`,
+    haupt:`Ich hab lange ohne ${c.name} gearbeitet – und mir damit ${c.v1} entgehen lassen. Das muss dir nicht passieren.`
+  })},
+
+  // 8. Quick-Tipp (3)
+  { kategorie:'Quick-Tipp', titel:'30-Sekunden-Tipp', bauen:(c)=>({
+    hook:`Ein Tipp für die nächsten 30 Sekunden.`,
+    haupt:`Schau dir ${c.name} an. Der Grund: ${c.v1}. Mehr musst du gerade nicht wissen.`
+  })},
+  { kategorie:'Quick-Tipp', titel:'Ein Satz Tipp', bauen:(c)=>({
+    hook:`Ein einziger Satz, der dir Zeit sparen kann.`,
+    haupt:`${c.name} gibt dir ${c.v1} – probier es einfach aus.`
+  })},
+  { kategorie:'Quick-Tipp', titel:'Tipp mit Bonus', bauen:(c)=>({
+    hook:`Kleiner Tipp, große Wirkung.`,
+    haupt:`${c.name} bringt dir ${c.v1}. Und als Bonus noch: ${c.v2}.`
+  })},
+
+  // 9. Vergleich (3)
+  { kategorie:'Vergleich', titel:'Vorher genutzt vs. jetzt', bauen:(c)=>({
+    hook:`Was ich früher genutzt habe, im Vergleich zu jetzt.`,
+    haupt:`Früher: mühsam und zeitaufwendig. Jetzt, mit ${c.name}: ${c.v1}. Der Unterschied ist kein Vergleich mehr.`
+  })},
+  { kategorie:'Vergleich', titel:'Teuer vs. günstig', bauen:(c)=>({
+    hook:`Teure Lösung oder ${c.name} für ${c.preisTxt} €?`,
+    haupt:`Andere verlangen ein Vielfaches für weniger. ${c.name} liefert ${c.v1} – zu einem fairen Preis.`
+  })},
+  { kategorie:'Vergleich', titel:'Zeitaufwand-Vergleich', bauen:(c)=>({
+    hook:`Der Zeitaufwand-Vergleich, der mich überzeugt hat.`,
+    haupt:`Ohne ${c.name}: Stunden investiert. Mit ${c.name}: ${c.v1} – in einem Bruchteil der Zeit.`
+  })},
+
+  // 10. Behind the Scenes (3)
+  { kategorie:'Behind the Scenes', titel:'Warum ich es erstellt habe', bauen:(c)=>({
+    hook:`Warum es ${c.name} überhaupt gibt.`,
+    haupt:`Ich hab selbst gemerkt, wie sehr ${c.ziel} genau das braucht: ${c.v1}. Also hab ich es umgesetzt.`
+  })},
+  { kategorie:'Behind the Scenes', titel:'Wie es entstanden ist', bauen:(c)=>({
+    hook:`Ein kurzer Blick hinter die Kulissen von ${c.name}.`,
+    haupt:`Entstanden aus einem echten Bedarf: ${c.v1}. Und am Ende kam noch dazu: ${c.v2}.`
+  })},
+  { kategorie:'Behind the Scenes', titel:'Ehrlicher Blick', bauen:(c)=>({
+    hook:`Ganz ehrlich, ohne Marketing-Sprech.`,
+    haupt:`${c.name} ist kein Zufallsprodukt. Dahinter steckt ${c.v1} – für genau ${c.ziel} gemacht.`
+  })}
+];
+
+/* ---------- Fiktion & Unterhaltung: Kinderbuch, Roman & Unterhaltung ---------- */
+/* Kein Problem/Lösung-Framing — hier geht es um Neugier, Figuren, Stimmung, nicht ums Problemlösen */
+const VERSIONEN_FIKTION = [
+  // Neugier-Hook (3)
+  { kategorie:'Neugier-Hook', titel:'Direkter Einstieg', bauen:(c)=>({
+    hook:`Stell dir vor: ${c.v1}.`,
+    haupt:`Genau damit beginnt „${c.name}". Für ${c.ziel} genau die richtige Geschichte.`
+  })},
+  { kategorie:'Neugier-Hook', titel:'Frage an den Zuschauer', bauen:(c)=>({
+    hook:`Was würdest du tun, wenn ${c.v1}?`,
+    haupt:`Genau darum geht's in „${c.name}". Und es kommt noch dicker: ${c.v2}.`
+  })},
+  { kategorie:'Neugier-Hook', titel:'Andeutung', bauen:(c)=>({
+    hook:`Es beginnt ganz harmlos. Bis ${c.v1}.`,
+    haupt:`„${c.name}" nimmt dich von da an mit – Seite für Seite.`
+  })},
+
+  // Charakter-Teaser (2)
+  { kategorie:'Charakter-Teaser', titel:'Hauptfigur vorstellen', bauen:(c)=>({
+    hook:`Lass mich dir jemanden vorstellen.`,
+    haupt:`In „${c.name}" triffst du auf eine Geschichte rund um ${c.v1}. Genau das macht sie besonders.`
+  })},
+  { kategorie:'Charakter-Teaser', titel:'Wieso diese Figur bleibt', bauen:(c)=>({
+    hook:`Es gibt Figuren, die bleiben einfach im Kopf.`,
+    haupt:`In „${c.name}" ist das genauso – wegen ${c.v1}.`
+  })},
+
+  // Atmosphäre / Stimmung (3)
+  { kategorie:'Atmosphäre', titel:'Stimmungsbild', bauen:(c)=>({
+    hook:`Manche Geschichten fühlt man mehr, als man sie liest.`,
+    haupt:`„${c.name}" ist genau so eine. ${c.v1} – das spürst du von der ersten Seite an.`
+  })},
+  { kategorie:'Atmosphäre', titel:'Ort/Setting', bauen:(c)=>({
+    hook:`Es gibt Orte, die selbst zur Hauptfigur werden.`,
+    haupt:`In „${c.name}" ist das nicht anders. ${c.v1}.`
+  })},
+  { kategorie:'Atmosphäre', titel:'Leise Spannung', bauen:(c)=>({
+    hook:`Nicht jede Spannung schreit – manche schleicht sich an.`,
+    haupt:`Genau das macht „${c.name}" aus: ${c.v1}.`
+  })},
+
+  // Zitat-Tease (2)
+  { kategorie:'Zitat-Tease', titel:'Ausschnitt anteasern', bauen:(c)=>({
+    hook:`Ein Satz aus „${c.name}", der hängen bleibt:`,
+    haupt:`${c.v1}. Mehr verrate ich jetzt nicht – lies selbst weiter.`
+  })},
+  { kategorie:'Zitat-Tease', titel:'Erste Zeile', bauen:(c)=>({
+    hook:`So beginnt „${c.name}".`,
+    haupt:`${c.v1}. Und von da an will man nicht mehr aufhören.`
+  })},
+
+  // Emotionaler Moment (2)
+  { kategorie:'Emotionaler Moment', titel:'Berührender Moment', bauen:(c)=>({
+    hook:`Es gibt diesen einen Moment, der einen erwischt.`,
+    haupt:`In „${c.name}" ist das der Punkt, an dem ${c.v1}.`
+  })},
+  { kategorie:'Emotionaler Moment', titel:'Warum es berührt', bauen:(c)=>({
+    hook:`Manche Geschichten gehen einfach näher, als man denkt.`,
+    haupt:`„${c.name}" schafft das durch ${c.v1}.`
+  })},
+
+  // Cliffhanger (2)
+  { kategorie:'Cliffhanger', titel:'Am Wendepunkt', bauen:(c)=>({
+    hook:`Und dann passiert das, womit niemand gerechnet hat.`,
+    haupt:`Mehr dazu in „${c.name}" – so viel sei gesagt: ${c.v1}.`
+  })},
+  { kategorie:'Cliffhanger', titel:'Offene Frage', bauen:(c)=>({
+    hook:`Die Frage, die bis zur letzten Seite bleibt:`,
+    haupt:`Ob ${c.v1} – das erfährst du nur in „${c.name}".`
+  })},
+
+  // Für-wen-ist-das (3)
+  { kategorie:'Für wen ist das', titel:'Direkte Ansprache', bauen:(c)=>({
+    hook:`„${c.name}" ist genau richtig, wenn gilt: ${c.ziel}.`,
+    haupt:`Dann wird dir besonders gefallen: ${c.v1}.`
+  })},
+  { kategorie:'Für wen ist das', titel:'Vorlese-Situation', bauen:(c)=>({
+    hook:`Ein Buch für genau die richtigen Momente.`,
+    haupt:`„${c.name}" passt perfekt für ${c.ziel} – wegen ${c.v1}.`
+  })},
+  { kategorie:'Für wen ist das', titel:'Geschenk-Anlass', bauen:(c)=>({
+    hook:`Auf der Suche nach einem Buch, das wirklich ankommt?`,
+    haupt:`„${c.name}" ist genau das – für ${c.ziel}, wegen ${c.v1}.`
+  })},
+
+  // Making-of / Autorinnen-Perspektive (2)
+  { kategorie:'Making-of', titel:'Warum entstanden', bauen:(c)=>({
+    hook:`Warum es „${c.name}" überhaupt gibt.`,
+    haupt:`Die Geschichte ist aus genau einer Idee entstanden: ${c.v1}.`
+  })},
+  { kategorie:'Making-of', titel:'Blick hinter die Kulissen', bauen:(c)=>({
+    hook:`Ein kurzer Blick hinter die Kulissen von „${c.name}".`,
+    haupt:`Entstanden ist es, weil ${c.v1} – und genau das wollte ich erzählen.`
+  })}
+];
+
+let blockIndex = 0;
+const BLOCK_GROESSE = 6;
+
+/* Welche Bibliothek passt zur Kategorie: Fiktion/Unterhaltung oder Sach/Problem-Lösung */
+function aktiveBibliothek(p){
+  const fiktionsKategorien = ['Kinderbuch', 'Roman & Unterhaltung'];
+  return fiktionsKategorien.includes(p.kategorie) ? VERSIONEN_FIKTION : VERSIONEN31;
+}
+
+function produktWechselAnzeige(){
+  const pid = parseInt(document.getElementById('gProdukt').value);
+  const p = produkte.find(x=>x.id===pid);
+  const altBox = document.getElementById('altStilBox');
+  const neuBox = document.getElementById('version31Box');
+  if(!p){ altBox.style.display=''; neuBox.style.display='none'; return; }
+  if(p.typ==='buch' || p.typ==='tool'){
+    altBox.style.display = 'none';
+    neuBox.style.display = '';
+    blockIndex = 0;
+    renderBlock();
+  } else {
+    altBox.style.display = '';
+    neuBox.style.display = 'none';
+  }
+}
+
+function blockNavigieren(richtung){
+  const pid = parseInt(document.getElementById('gProdukt').value);
+  const p = produkte.find(x=>x.id===pid);
+  const bib = p ? aktiveBibliothek(p) : VERSIONEN31;
+  const maxBlock = Math.ceil(bib.length / BLOCK_GROESSE) - 1;
+  blockIndex = Math.min(maxBlock, Math.max(0, blockIndex + richtung));
+  renderBlock();
+}
+
+function renderBlock(){
+  const pid = parseInt(document.getElementById('gProdukt').value);
+  const p = produkte.find(x=>x.id===pid);
+  const bib = p ? aktiveBibliothek(p) : VERSIONEN31;
+  const start = blockIndex * BLOCK_GROESSE;
+  const ende = Math.min(start + BLOCK_GROESSE, bib.length);
+  document.getElementById('blockRange').textContent = `Nr. ${start+1}–${ende} von ${bib.length}`;
+  const box = document.getElementById('blockListe');
+  box.innerHTML = bib.slice(start, ende).map((v,i)=>{
+    const idx = start+i;
+    return `
+    <div class="produkt" style="margin-bottom:8px">
+      <div class="info">
+        <span class="badge gut">${esc(v.kategorie)}</span>
+        <div class="name" style="margin-top:4px">${esc(v.titel)}</div>
+      </div>
+      <button class="btn btn-pink btn-sm" onclick="versionGenerieren(${idx})">🎬 Erzeugen</button>
+    </div>`;
+  }).join('');
+}
+
+function versionGenerieren(idx){
+  const pid = parseInt(document.getElementById('gProdukt').value);
+  const p = produkte.find(x=>x.id===pid);
+  if(!p){ alert('Bitte erst ein Produkt anlegen und auswählen.'); return; }
+  const v = p.vorteile;
+  const ctx = {
+    name: p.name,
+    v1: v[0] || 'es funktioniert einfach',
+    v2: v[1] || (v[0] || 'es funktioniert einfach'),
+    v3: v[2] || v[1] || v[0] || 'es funktioniert einfach',
+    ziel: p.zielgruppe || 'alle, die sich das Leben leichter machen wollen',
+    preisTxt: p.preis.toFixed(2).replace('.',',')
+  };
+  const bib = aktiveBibliothek(p);
+  const version = bib[idx];
+  const { hook, haupt } = version.bauen(ctx);
+  const typ = p.typ || 'affiliate';
+  const ctaPool = typ==='buch' ? buchCtas : toolCtas;
+  const cta = zufall(ctaPool).replaceAll('{name}', p.name).replaceAll('{preis}', ctx.preisTxt);
+  renderSkriptAusgabe(hook, haupt, cta, p, typ, `${version.kategorie} – ${version.titel}`);
+}
+
+/* ---------- Geteilte Ausgabe-Darstellung ---------- */
+function renderSkriptAusgabe(hook, haupt, cta, p, typ, stilLabel){
+  const komplett = hook + '\n\n' + haupt + '\n\n' + cta;
+  window._skriptAktuell = { pid: p.id, text: komplett, stil: stilLabel, hook: hook, haupt: haupt };
+  const beitrag = beitragErzeugen(p, typ, hook, haupt);
+  window._skriptAktuell.tiktok = beitrag.tiktok;
+  window._skriptAktuell.youtube = beitrag.youtube;
+  window._skriptAktuell.instagram = beitrag.instagram;
+  window._skriptAktuell.pinterest = beitrag.pinterest;
+
+  document.getElementById('skriptBox').innerHTML = `
+    <div class="skript-output" id="skriptText">
+      <span class="abschnitt cyan">Hook (erste 3 Sekunden)</span>${esc(hook)}
+      <span class="abschnitt">Hauptteil</span>${esc(haupt)}
+      <span class="abschnitt cyan">Call-to-Action</span>${esc(cta)}
+    </div>
+    <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.text)">📋 Für HeyGen kopieren</button>
+    <button class="btn btn-ghost" onclick="skriptSpeichern()">💾 In „Meine Skripte" speichern</button>
+    <p style="color:var(--amber);font-size:12px;margin-top:8px">⚠️ Erst speichern, dann erst in HeyGen einfügen — sonst ist der Text weg, sobald du das nächste Skript generierst. Du brauchst ihn später auch für den Untertitelbrenner.</p>
+    <div class="skript-output">
+      <span class="abschnitt">📱 TikTok-Beitragstext</span>${esc(beitrag.tiktok)}
+    </div>
+    <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.tiktok)">📋 TikTok-Text kopieren</button>
+    <button class="btn btn-ghost" onclick="beitragNeuGenerieren()">🔄 Beitragstexte neu würfeln</button>
+    <div class="skript-output">
+      <span class="abschnitt cyan">▶️ YouTube Shorts – Titel &amp; Beschreibung</span>${esc(beitrag.youtube)}
+    </div>
+    <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.youtube)">📋 YouTube-Text kopieren</button>
+    <div class="skript-output">
+      <span class="abschnitt">📸 Instagram-Beitragstext</span>${esc(beitrag.instagram)}
+    </div>
+    <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.instagram)">📋 Instagram-Text kopieren</button>
+    <div class="skript-output">
+      <span class="abschnitt cyan">📌 Pinterest-Pin</span>${esc(beitrag.pinterest)}
+    </div>
+    <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.pinterest)">📋 Pinterest-Text kopieren</button>`;
+  document.getElementById('skriptBox').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function skriptGenerieren(){
+  const pid = parseInt(document.getElementById('gProdukt').value);
+  const p = produkte.find(x=>x.id===pid);
+  if(!p){ alert('Bitte erst ein Produkt anlegen und auswählen.'); return; }
+
+  const stil = document.getElementById('gStil').value;
+  const laenge = parseInt(document.getElementById('gLaenge').value);
+  const v = p.vorteile;
+  const v1 = v[0] || 'es funktioniert einfach';
+  const v2 = v[1] || v1;
+  const v3 = v[2] || v2;
+  const ziel = p.zielgruppe || 'alle, die sich das Leben leichter machen wollen';
+  const preisTxt = p.preis.toFixed(2).replace('.',',');
+
+  const gegenteil = `Die ewige Sucherei, bevor man endlich etwas findet, das wirklich hilft.`;
+
+  let hook = zufall(hooks[stil])
+    .replaceAll('{name}', p.name)
+    .replaceAll('{gegenteil}', gegenteil)
+    .replaceAll('{ziel}', ziel)
+    .replaceAll('{v1}', v1);
+
+  const typ = p.typ || 'affiliate';
+  let haupt = '';
+  if(typ==='freebie'){
+    haupt = `Genau dafür habe ich etwas erstellt – komplett kostenlos: ${p.name}. Das Wichtigste darin: ${v1}.`;
+    if(laenge>=45) haupt += `\nAußerdem bekommst du: ${v2}. Gerade wenn du zu ${ziel} gehörst, wirst du das lieben.`;
+    if(laenge>=60) haupt += `\nUnd obendrauf gibt es noch: ${v3}. Alles gratis – ohne Haken, ohne Kleingedrucktes.`;
+  } else if(stil==='gruende'){
+    haupt = `Grund eins: ${v1}. Das allein ist es schon wert.\nGrund zwei: ${v2}. Ehrlich – das macht im Alltag den Unterschied.\nUnd Grund drei, mein Favorit: ${v3}.`;
+    if(laenge>=45) haupt += `\nUnd das Beste: ${p.name} kostet gerade nur ${preisTxt} € – das ist weniger, als viele für Sachen ausgeben, die sie nie benutzen.`;
+    if(laenge>=60) haupt += `\nGerade wenn du zu ${ziel} gehörst, wirst du dich fragen, warum du das nicht schon früher hattest.`;
+  } else if(stil==='story'){
+    haupt = `Ich hab mir ${p.name} geholt – und was soll ich sagen: ${v1}. Damit hatte ich nicht gerechnet.`;
+    if(laenge>=45) haupt += `\nDazu kommt noch: ${v2}. Und genau das war für mich der Punkt, wo ich dachte – okay, das behalte ich.`;
+    if(laenge>=60) haupt += `\nUnd falls du dich fragst, ob das was für dich ist: Wenn du zu ${ziel} gehörst, dann definitiv. Außerdem: ${v3}.`;
+    haupt += `\nFür ${preisTxt} € ehrlich gesagt ein No-Brainer.`;
+  } else if(stil==='frage'){
+    haupt = `Die Antwort heißt ${p.name}. Der wichtigste Punkt: ${v1}.`;
+    if(laenge>=45) haupt += `\nDazu kommt: ${v2}. Genau das macht es für ${ziel} so praktisch.`;
+    if(laenge>=60) haupt += `\nUnd als kleines Extra obendrauf: ${v3}. Das bekommst du gerade für ${preisTxt} €.`;
+    else haupt += `\nUnd das für gerade mal ${preisTxt} €.`;
+  } else if(stil==='geheimtipp'){
+    haupt = `Es geht um ${p.name}. Klingt erstmal unscheinbar – aber: ${v1}.`;
+    if(laenge>=45) haupt += `\nUnd es wird noch besser: ${v2}. Deshalb geht das Ding in den USA gerade durch die Decke.`;
+    if(laenge>=60) haupt += `\nBesonders für ${ziel} ist das ein echter Gamechanger. Oh, und: ${v3}.`;
+    haupt += `\nAktuell bekommst du es für ${preisTxt} € – bevor es alle kennen.`;
+  } else { /* problem */
+    haupt = `Genau dafür gibt es jetzt ${p.name}. Der Unterschied: ${v1}.`;
+    if(laenge>=45) haupt += `\nUnd es kann noch mehr: ${v2}. Gerade für ${ziel} ist das Gold wert.`;
+    if(laenge>=60) haupt += `\nWas mich am Ende überzeugt hat: ${v3}. Alles zusammen für ${preisTxt} € – das rechnet sich schnell.`;
+    else haupt += `\nUnd das Ganze für nur ${preisTxt} €.`;
+  }
+
+  const ctaPool = typ==='freebie' ? freebieCtas : typ==='buch' ? buchCtas : typ==='tool' ? toolCtas : ctas;
+  const cta = zufall(ctaPool)
+    .replaceAll('{name}', p.name)
+    .replaceAll('{preis}', preisTxt);
+
+  const stilNamenKurz = {problem:'Problem & Lösung', gruende:'Top-3-Gründe', story:'Story', frage:'Frage-Hook', geheimtipp:'Geheimtipp'};
+  renderSkriptAusgabe(hook, haupt, cta, p, typ, stilNamenKurz[stil] || stil);
+}
+
+function skriptSpeichern(){
+  const akt = window._skriptAktuell;
+  if(!akt){ alert('Bitte erst ein Skript generieren.'); return; }
+  const p = produkte.find(x=>x.id===akt.pid);
+  const stilNamen = {problem:'Problem & Lösung', gruende:'Top-3-Gründe', story:'Story', frage:'Frage-Hook', geheimtipp:'Geheimtipp'};
+  skripte.unshift({
+    id: Date.now(),
+    produkt: p ? p.name : 'Unbekannt',
+    stil: stilNamen[akt.stil] || akt.stil,
+    text: akt.text,
+    tiktok: akt.tiktok,
+    youtube: akt.youtube,
+    instagram: akt.instagram,
+    pinterest: akt.pinterest,
+    status: 'skript',
+    datum: new Date().toLocaleDateString('de-DE')
+  });
+  speichern('tikpromo_skripte', skripte);
+  toast('Skript + Beitragstexte gespeichert ✔');
+}
+
+/* ---------- Archiv ---------- */
+let editingId = null;
+
+function archivRendern(){
+  const box = document.getElementById('archivListe');
+  if(skripte.length===0){
+    box.innerHTML = '<div class="leer">Noch keine gespeicherten Skripte. Generiere eins im Skript-Generator und speichere es hier ab.</div>';
+    return;
+  }
+  box.innerHTML = skripte.map(s=>{
+    if(editingId === s.id){
+      return `
+      <div class="archiv-item">
+        <div class="kopf">
+          <div>
+            <span class="titel">${esc(s.produkt)}</span>
+            <span class="datum"> &middot; ${esc(s.stil)} &middot; ${s.datum}</span>
+          </div>
+        </div>
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin:10px 0 4px">Skript</label>
+        <textarea id="edit-text-${s.id}" style="width:100%;min-height:120px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px 12px;font-family:inherit;font-size:14px">${esc(s.text)}</textarea>
+        ${s.tiktok ? `<label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin:10px 0 4px">TikTok-Beitragstext</label>
+        <textarea id="edit-tiktok-${s.id}" style="width:100%;min-height:80px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px 12px;font-family:inherit;font-size:14px">${esc(s.tiktok)}</textarea>` : ''}
+        ${s.youtube ? `<label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin:10px 0 4px">YouTube-Text</label>
+        <textarea id="edit-youtube-${s.id}" style="width:100%;min-height:80px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px 12px;font-family:inherit;font-size:14px">${esc(s.youtube)}</textarea>` : ''}
+        ${s.instagram ? `<label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin:10px 0 4px">Instagram-Text</label>
+        <textarea id="edit-instagram-${s.id}" style="width:100%;min-height:80px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px 12px;font-family:inherit;font-size:14px">${esc(s.instagram)}</textarea>` : ''}
+        ${s.pinterest ? `<label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin:10px 0 4px">Pinterest-Pin</label>
+        <textarea id="edit-pinterest-${s.id}" style="width:100%;min-height:80px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px 12px;font-family:inherit;font-size:14px">${esc(s.pinterest)}</textarea>` : ''}
+        <div class="archiv-actions">
+          <button class="btn btn-primary btn-sm" onclick="skriptSpeichernEdit(${s.id})">💾 Änderungen speichern</button>
+          <button class="btn btn-ghost btn-sm" onclick="editingId=null; archivRendern();">Abbrechen</button>
+        </div>
+      </div>`;
+    }
+    return `
+    <div class="archiv-item">
+      <div class="kopf">
+        <div>
+          <span class="titel">${esc(s.produkt)}</span>
+          <span class="datum"> &middot; ${esc(s.stil)} &middot; ${s.datum}</span>
+        </div>
+        <select class="status-select" onchange="statusAendern(${s.id}, this.value)">
+          <option value="skript" ${s.status==='skript'?'selected':''}>📝 Skript erstellt</option>
+          <option value="video" ${s.status==='video'?'selected':''}>🎬 Video fertig</option>
+          <option value="geplant" ${s.status==='geplant'?'selected':''}>📅 In TikTok eingeplant</option>
+          <option value="online" ${s.status==='online'?'selected':''}>✅ Online</option>
+        </select>
+      </div>
+      <details>
+        <summary>Skript anzeigen</summary>
+        <div class="skript-output">${esc(s.text)}</div>
+      </details>
+      ${s.tiktok ? `<details>
+        <summary>📱 TikTok-Beitragstext anzeigen</summary>
+        <div class="skript-output">${esc(s.tiktok)}</div>
+      </details>` : ''}
+      ${s.youtube ? `<details>
+        <summary>▶️ YouTube-Text anzeigen</summary>
+        <div class="skript-output">${esc(s.youtube)}</div>
+      </details>` : ''}
+      ${s.instagram ? `<details>
+        <summary>📸 Instagram-Text anzeigen</summary>
+        <div class="skript-output">${esc(s.instagram)}</div>
+      </details>` : ''}
+      ${s.pinterest ? `<details>
+        <summary>📌 Pinterest-Pin anzeigen</summary>
+        <div class="skript-output">${esc(s.pinterest)}</div>
+      </details>` : ''}
+      <div class="archiv-actions">
+        <button class="btn btn-primary btn-sm" onclick="kopieren(skripte.find(x=>x.id===${s.id}).text)">📋 Skript</button>
+        ${s.tiktok ? `<button class="btn btn-primary btn-sm" onclick="kopieren(skripte.find(x=>x.id===${s.id}).tiktok)">📋 TikTok</button>` : ''}
+        ${s.youtube ? `<button class="btn btn-primary btn-sm" onclick="kopieren(skripte.find(x=>x.id===${s.id}).youtube)">📋 YouTube</button>` : ''}
+        ${s.instagram ? `<button class="btn btn-primary btn-sm" onclick="kopieren(skripte.find(x=>x.id===${s.id}).instagram)">📋 Instagram</button>` : ''}
+        ${s.pinterest ? `<button class="btn btn-primary btn-sm" onclick="kopieren(skripte.find(x=>x.id===${s.id}).pinterest)">📋 Pinterest</button>` : ''}
+        <button class="btn btn-ghost btn-sm" onclick="editingId=${s.id}; archivRendern();">✏️ Bearbeiten</button>
+        <button class="btn btn-ghost btn-sm" onclick="skriptLoeschen(${s.id})">🗑 Löschen</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function skriptSpeichernEdit(id){
+  const s = skripte.find(x=>x.id===id);
+  if(!s) return;
+  const feld = (name) => { const el = document.getElementById('edit-'+name+'-'+id); return el ? el.value : undefined; };
+  s.text = feld('text') ?? s.text;
+  if(s.tiktok !== undefined) s.tiktok = feld('tiktok') ?? s.tiktok;
+  if(s.youtube !== undefined) s.youtube = feld('youtube') ?? s.youtube;
+  if(s.instagram !== undefined) s.instagram = feld('instagram') ?? s.instagram;
+  if(s.pinterest !== undefined) s.pinterest = feld('pinterest') ?? s.pinterest;
+  speichern('tikpromo_skripte', skripte);
+  editingId = null;
+  archivRendern();
+  toast('Änderungen gespeichert ✔');
+}
+
+function statusAendern(id, status){
+  const s = skripte.find(x=>x.id===id);
+  if(s){ s.status = status; speichern('tikpromo_skripte', skripte); }
+}
+
+function skriptLoeschen(id){
+  if(!confirm('Skript wirklich löschen?')) return;
+  skripte = skripte.filter(s=>s.id!==id);
+  speichern('tikpromo_skripte', skripte);
+  archivRendern();
+}
+
+/* ---------- Helfer ---------- */
+function kopieren(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>toast('Kopiert ✔')).catch(()=>fallbackKopieren(text));
+  } else { fallbackKopieren(text); }
+}
+function fallbackKopieren(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.top = '0';
+  ta.style.left = '0';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  ta.setSelectionRange(0, ta.value.length);
+  try{ document.execCommand('copy'); toast('Kopiert ✔'); }catch(e){ alert('Kopieren nicht möglich – bitte den Text manuell markieren und kopieren.'); }
+  document.body.removeChild(ta);
+}
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1800);
+}
+function esc(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ---------- Start ---------- */
+
+/* ================= PROMO-ZENTRALE: Finder, API-Key & Paket ================= */
 /* ---------- API-Schlüssel ---------- */
 function apiKeySpeichern(){
   const k = document.getElementById('apiKeyInput').value.trim();
@@ -422,15 +1518,6 @@ function keyStatusAnzeigen(){
 }
 document.addEventListener('DOMContentLoaded', keyStatusAnzeigen);
 
-/* ---------- Tabs ---------- */
-function zeigeTab(name){
-  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  document.querySelector('nav button[data-tab="'+name+'"]').classList.add('active');
-  if(name==='paket') produktDropdownFuellen();
-}
-
 /* ---------- Produktfinder ---------- */
 let aktMode = 'problem';
 const scanTexte = ['Digistore24 wird durchsucht…','Amazon wird geprüft…','Marktplätze werden verglichen…','Passende Angebote werden bewertet…'];
@@ -445,11 +1532,11 @@ function setMode(mode){
   const input = document.getElementById('problemInput');
   [pBtn,bBtn].forEach(b=>{ b.style.borderColor='var(--line)'; b.style.background='var(--surface2)'; b.style.color='var(--muted)'; });
   if(mode==='problem'){
-    pBtn.style.borderColor='var(--gold)'; pBtn.style.background='rgba(245,197,66,.14)'; pBtn.style.color='var(--gold)';
+    pBtn.style.borderColor='var(--gold)'; pBtn.style.background='rgba(255,176,32,.14)'; pBtn.style.color='var(--gold)';
     label.textContent = 'Welches Problem soll gelöst werden?';
     input.placeholder = 'z. B. Menschen wollen abends leichter einschlafen, ohne Tabletten\noder: Katzenbesitzer suchen eine einfache Lösung gegen Katzenhaare auf dem Sofa';
   } else {
-    bBtn.style.borderColor='var(--gold)'; bBtn.style.background='rgba(245,197,66,.14)'; bBtn.style.color='var(--gold)';
+    bBtn.style.borderColor='var(--gold)'; bBtn.style.background='rgba(255,176,32,.14)'; bBtn.style.color='var(--gold)';
     label.textContent = 'Nische oder Thema (optional)';
     input.placeholder = 'z. B. Gesundheit, Beauty, Survival, Online-Business, Haustiere\noder leer lassen für alle Nischen';
   }
@@ -542,177 +1629,124 @@ function renderFinderErgebnisse(){
     </div>`).join('');
 }
 
+
 function produktUebernehmen(i){
   const p = gefundeneProdukte[i];
   zeigeTab('produkte');
+  document.getElementById('pTyp').value = 'affiliate';
+  typWechsel();
   document.getElementById('pName').value = p.name || '';
   const provZahl = parseFloat((p.provision||'').replace('%','').replace(',','.'));
   const preisZahl = parseFloat((p.preis||'').replace(/[^\d,\.]/g,'').replace(',','.'));
   document.getElementById('pPreis').value = isNaN(preisZahl) ? '' : preisZahl;
   document.getElementById('pProvision').value = isNaN(provZahl) ? '' : provZahl;
-  document.getElementById('pVendor').value = p.plattform || '';
-  proviAnzeigen();
-  toast('Produkt übernommen — jetzt Link, Zielgruppe & Nutzen ergänzen');
-  document.getElementById('pLink').focus();
+  document.getElementById('pLink').value = p.link || '';
+  if(p.warum) document.getElementById('pVorteile').value = p.warum;
+  ampelAnzeigen();
+  toast('Produkt übernommen — jetzt Zielgruppe & Vorteile ergänzen');
+  document.getElementById('pZielgruppe').focus();
 }
 
-/* ---------- Provisionsrechner ---------- */
-function proviAnzeigen(){
-  const preis = parseFloat(document.getElementById('pPreis').value);
-  const prov  = parseFloat(document.getElementById('pProvision').value);
-  const box = document.getElementById('proviBox');
-  if(isNaN(preis) || isNaN(prov)){ box.innerHTML=''; return; }
-  const euro = preis * prov / 100;
-  box.innerHTML = `
-    <div class="provi">
-      <span class="betrag">${euro.toFixed(2).replace('.',',')} €</span>
-      <span>Provision pro Verkauf<small>Schon 4 Verkäufe im Monat = ${(euro*4).toFixed(0)} €</small></span>
-    </div>`;
-}
-document.getElementById('pPreis').addEventListener('input', proviAnzeigen);
-document.getElementById('pProvision').addEventListener('input', proviAnzeigen);
 
-/* ---------- Produkte ---------- */
-function produktSpeichern(){
-  const name = document.getElementById('pName').value.trim();
-  const vendor = document.getElementById('pVendor').value.trim();
-  const launch = document.getElementById('pLaunch').value.trim();
-  const preis = parseFloat(document.getElementById('pPreis').value);
-  const prov = parseFloat(document.getElementById('pProvision').value);
-  const link = document.getElementById('pLink').value.trim();
-  const zielgruppe = document.getElementById('pZielgruppe').value.trim();
-  const nutzen = document.getElementById('pNutzen').value.split('\n').map(v=>v.trim()).filter(v=>v);
-
-  if(!name){ alert('Bitte einen Produktnamen eingeben.'); return; }
-  if(isNaN(preis) || isNaN(prov)){ alert('Bitte Preis und Provision eingeben.'); return; }
-  if(!link){ alert('Bitte deinen Affiliate-Link eintragen.'); return; }
-  if(nutzen.length < 1){ alert('Bitte mindestens einen Nutzen eingeben.'); return; }
-
-  produkte.push({ id: Date.now(), name, vendor, launch, preis, prov, link, zielgruppe, nutzen, provEuro: preis*prov/100 });
-  speichern('launchpromoter_produkte', produkte);
-  produktListeRendern();
-
-  ['pName','pVendor','pLaunch','pPreis','pProvision','pLink','pZielgruppe','pNutzen'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('proviBox').innerHTML='';
-  toast('Produkt gespeichert ✔');
-}
-
-function produktListeRendern(){
-  const box = document.getElementById('produktListe');
-  if(produkte.length===0){
-    box.innerHTML = '<div class="leer">Noch keine Produkte. Schau auf Digistore24 oder launchkalender.de nach passenden Launches und trag sie hier ein.</div>';
-    return;
-  }
-  box.innerHTML = produkte.map(p=>`
-    <div class="produkt">
-      <div class="info">
-        <span class="name">${esc(p.name)}</span>
-        <div class="meta">${p.preis.toFixed(2).replace('.',',')} € &middot; ${p.prov}% = <span class="gruen">${p.provEuro.toFixed(2).replace('.',',')} € pro Verkauf</span>${p.vendor?' &middot; '+esc(p.vendor):''}${p.launch?' &middot; Launch: '+esc(p.launch):''}</div>
-      </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-gold btn-sm" onclick="zumPaket(${p.id})">Paket →</button>
-        <button class="btn btn-ghost btn-sm" onclick="produktLoeschen(${p.id})">🗑</button>
-      </div>
-    </div>`).join('');
-}
-
-function produktLoeschen(id){
-  if(!confirm('Produkt wirklich löschen?')) return;
-  produkte = produkte.filter(p=>p.id!==id);
-  speichern('launchpromoter_produkte', produkte);
-  produktListeRendern();
-}
-
-function zumPaket(id){
-  zeigeTab('paket');
-  document.getElementById('gProdukt').value = id;
-}
-
-function produktDropdownFuellen(){
-  const sel = document.getElementById('gProdukt');
+/* ---------- Promo-Paket ---------- */
+function paketDropdownFuellen(){
+  const sel = document.getElementById('ppProdukt');
   if(produkte.length===0){
     sel.innerHTML = '<option value="">– erst ein Produkt anlegen –</option>';
     return;
   }
-  sel.innerHTML = produkte.map(p=>`<option value="${p.id}">${esc(p.name)} (${p.provEuro.toFixed(0)} € Provision)</option>`).join('');
+  sel.innerHTML = produkte.map(p=>{
+    const typ = p.typ || 'affiliate';
+    const preisTxt = p.preis > 0 ? p.preis.toFixed(2).replace('.',',')+' €' : 'gratis';
+    return `<option value="${p.id}">${typLabels[typ].split(' ')[0]} ${esc(p.name)} (${preisTxt})</option>`;
+  }).join('');
 }
 
-/* ---------- Promo-Paket ---------- */
-function zufall(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
 function paketGenerieren(){
-  const pid = parseInt(document.getElementById('gProdukt').value);
+  const pid = parseInt(document.getElementById('ppProdukt').value);
   const p = produkte.find(x=>x.id===pid);
   if(!p){ alert('Bitte erst ein Produkt anlegen und auswählen.'); return; }
 
-  const n1 = p.nutzen[0] || 'es funktioniert Schritt für Schritt';
-  const n2 = p.nutzen[1] || n1;
-  const n3 = p.nutzen[2] || n2;
+  const typ = p.typ || 'affiliate';
+  const eigen = (typ!=='affiliate');
+  const frei  = (typ==='freebie');
+  const n1 = p.vorteile[0] || 'es funktioniert Schritt für Schritt';
+  const n2 = p.vorteile[1] || n1;
+  const n3 = p.vorteile[2] || n2;
   const ziel = p.zielgruppe || 'alle, die online durchstarten wollen';
-  const preisTxt = p.preis.toFixed(2).replace('.',',');
-  const launchTxt = p.launch ? ` am ${p.launch}` : '';
+  const preisTxt = p.preis > 0 ? p.preis.toFixed(2).replace('.',',') + ' €' : 'gratis';
+  const link = p.link || '[Link hier einfügen]';
+  const kennz = eigen ? '' : '\n\n(Werbung / Affiliate-Link)';
+  const wasIst = typ==='buch' ? 'mein Buch' : typ==='tool' ? 'mein Tool' : typ==='freebie' ? 'mein Gratis-Angebot' : p.name;
 
   /* --- 1. HeyGen-Videoskript --- */
-  const videoHooks = [
+  const videoHooks = eigen ? [
+    `Stopp – bevor du weiterscrollst: Das hier könnte genau das sein, wonach du gesucht hast.`,
+    `Ich habe etwas für dich, das ich selbst entwickelt habe – und darauf bin ich ehrlich stolz.`,
+    `Wenn du zu ${ziel} gehörst, dann sind die nächsten Sekunden wichtig für dich.`,
+    `Darf ich dir kurz ${wasIst} vorstellen? In 40 Sekunden weißt du, ob es zu dir passt.`
+  ] : [
     `Stopp – bevor du weiterscrollst: Das hier könnte genau das sein, wonach du gesucht hast.`,
     `Ich hab mir ${p.name} genauer angeschaut – und das musst du wissen, bevor du dich entscheidest.`,
     `Alle reden gerade über ${p.name}. Ich sage dir in 40 Sekunden, ob sich das wirklich lohnt.`,
     `Wenn du zu ${ziel} gehörst, dann sind die nächsten Sekunden wichtig für dich.`
   ];
-  const videoCtas = [
+  const videoCtas = frei ? [
+    `Der Link ist in meiner Bio beziehungsweise in der Beschreibung – hol es dir, es kostet dich nichts.`,
+    `Trag dich einfach über den Link in der Beschreibung ein, dann bekommst du alles sofort zugeschickt.`
+  ] : typ==='buch' ? [
+    `Du findest es auf Amazon – der Link ist in meiner Bio beziehungsweise in der Beschreibung.`,
+    `Schau es dir auf Amazon an, der Link ist in der Beschreibung. Und wenn es dir gefällt, freue ich mich riesig über eine Bewertung.`
+  ] : [
     `Den Link findest du in meiner Bio beziehungsweise in der Beschreibung. Schau es dir unverbindlich an – entscheiden kannst du danach immer noch.`,
-    `Alle Infos gibt es über den Link in der Beschreibung. Und wenn du Fragen hast, schreib sie mir in die Kommentare!`,
-    `Klick auf den Link in der Bio und mach dir selbst ein Bild. Und folge mir, wenn du mehr ehrliche Einschätzungen zu solchen Produkten willst.`
+    `Alle Infos gibt es über den Link in der Beschreibung. Und wenn du Fragen hast, schreib sie mir in die Kommentare!`
   ];
+  const preisSatz = frei ? 'Und das Beste: Es ist komplett gratis.' : `Aktuell liegt der Preis bei ${preisTxt}.`;
   const video = zufall(videoHooks) +
-`\n\nEs geht um ${p.name}${p.vendor ? ' von ' + p.vendor : ''}. Das Wichtigste in Kürze: ${n1}.
+`\n\nEs geht um ${p.name}${eigen ? ' – ' + (typ==='buch' ? 'mein eigenes Buch' : typ==='tool' ? 'ein Tool, das ich selbst entwickelt habe' : 'mein Gratis-Angebot für dich') : ''}. Das Wichtigste in Kürze: ${n1}.
 Dazu kommt: ${n2}. Genau das macht es für ${ziel} interessant.
-Und der Punkt, der mich überzeugt hat: ${n3}.${p.launch ? `\nWichtig: Der Start ist${launchTxt} – danach kann sich der Preis ändern.` : ''}
-Aktuell liegt der Preis bei ${preisTxt} €.\n\n` + zufall(videoCtas);
+Und der Punkt, der ${eigen ? 'mir dabei am wichtigsten war' : 'mich überzeugt hat'}: ${n3}.
+${preisSatz}\n\n` + zufall(videoCtas);
 
   /* --- 2. Drei Facebook-Posts --- */
   const fb1 =
-`🚀 ${p.launch ? 'Save the Date: ' + p.launch + '!' : 'Kennt ihr das schon?'}
+`🚀 ${eigen ? (typ==='buch' ? 'Mein Buch ist da!' : frei ? 'Ein Geschenk für euch!' : 'Mein neues Tool ist fertig!') : 'Kennt ihr das schon?'}
 
-${p.name}${p.vendor ? ' von ' + p.vendor : ''} ${p.launch ? 'startet' + launchTxt : 'ist jetzt verfügbar'} – und ich habe es mir für euch angeschaut.
+${p.name} ${eigen ? 'ist jetzt verfügbar – und dahinter steckt eine Menge Herzblut.' : '– ich habe es mir für euch angeschaut.'}
 
-Das Versprechen: ${n1}. Für ${ziel} klingt das erstmal groß – aber der Ansatz dahinter ist durchdacht.
+${eigen ? 'Was es kann' : 'Das Versprechen'}: ${n1}. Für ${ziel} ${eigen ? 'genau das Richtige' : 'klingt das erstmal groß – aber der Ansatz dahinter ist durchdacht'}.
 
-Ich halte euch auf dem Laufenden. Wer nichts verpassen will: 👉 ${p.link}
-
-(Werbung / Affiliate-Link)`;
+${frei ? 'Komplett gratis – hol es dir hier' : 'Alle Infos gibt es hier'}: 👉 ${link}${kennz}`;
 
   const fb2 =
 `Mal ehrlich gefragt: ${n1} – wäre das was für dich? 🤔
 
-Genau das ist der Kern von ${p.name}. Was mir daran gefällt:
+Genau das ${eigen ? 'kann' : 'ist der Kern von'} ${p.name}. ${eigen ? 'Die drei wichtigsten Punkte' : 'Was mir daran gefällt'}:
 
 ✅ ${n1}
 ✅ ${n2}
 ✅ ${n3}
 
-Ich sage nicht, dass es für jeden passt. Aber wenn du zu ${ziel} gehörst, lohnt sich ein Blick: 👉 ${p.link}
-
-(Werbung / Affiliate-Link)`;
+${frei ? 'Es kostet dich nichts – schau einfach rein' : 'Wenn du zu ' + ziel + ' gehörst, lohnt sich ein Blick'}: 👉 ${link}${kennz}`;
 
   const fb3 =
-`Letzte Erinnerung${p.launch ? ' – ' + p.launch + ' ist es so weit' : ''}! ⏰
+`${eigen ? 'Viele haben schon reingeschaut – danke euch! 🙏' : 'Letzte Erinnerung! ⏰'}
 
-Viele von euch haben nach ${p.name} gefragt. Hier nochmal die Fakten:
+${eigen ? 'Falls du ' + p.name + ' noch nicht kennst, hier' : 'Viele von euch haben nach ' + p.name + ' gefragt. Hier'} nochmal die Fakten:
 
 💡 ${n1}
 💡 ${n2}
-💰 Preis: ${preisTxt} €${p.launch ? ' (Startpreis – kann danach steigen)' : ''}
+${frei ? '🎁 Komplett gratis' : '💰 Preis: ' + preisTxt}
 
-Alle Details findet ihr hier: 👉 ${p.link}
-
-Wer schon dabei ist: Schreibt mir gern eure ersten Eindrücke in die Kommentare!
-
-(Werbung / Affiliate-Link)`;
+Alle Details findet ihr hier: 👉 ${link}${eigen ? '' : '\n\nWer schon dabei ist: Schreibt mir gern eure ersten Eindrücke in die Kommentare!'}${kennz}`;
 
   /* --- 3. E-Mail (MailerLite) --- */
-  const betreffe = [
-    `${p.name}: Das solltest du dir anschauen${p.launch ? ' (' + p.launch + ')' : ''}`,
+  const betreffe = eigen ? [
+    `${p.name}: ${frei ? 'Ein Geschenk für dich' : 'Es ist so weit!'}`,
+    `${n1}? ${frei ? 'Hol es dir gratis' : 'Jetzt verfügbar'}`,
+    `Neu von mir: ${p.name}`
+  ] : [
+    `${p.name}: Das solltest du dir anschauen`,
     `Ehrliche Einschätzung: Lohnt sich ${p.name}?`,
     `${n1}? So geht das jetzt`
   ];
@@ -721,35 +1755,33 @@ Wer schon dabei ist: Schreibt mir gern eure ersten Eindrücke in die Kommentare!
 
 Hallo {$name},
 
-heute habe ich einen Tipp für dich, der zu dir passen könnte, wenn du dich für dieses Thema interessierst.
+${eigen ? (frei ? 'heute habe ich ein Geschenk für dich.' : 'heute darf ich dir etwas zeigen, an dem ich lange gearbeitet habe.') : 'heute habe ich einen Tipp für dich, der zu dir passen könnte, wenn du dich für dieses Thema interessierst.'}
 
-Es geht um ${p.name}${p.vendor ? ' von ' + p.vendor : ''}. In Kurzform bekommst du damit:
+Es geht um ${p.name}. In Kurzform bekommst du damit:
 
 – ${n1}
 – ${n2}
 – ${n3}
 
-${p.launch ? `Wichtig zu wissen: Der Start ist${launchTxt}. Zum Launch gilt der Einstiegspreis von ${preisTxt} € – danach kann es teurer werden.` : `Der Preis liegt aktuell bei ${preisTxt} €.`}
+${frei ? 'Das Ganze ist komplett kostenlos.' : 'Der Preis liegt aktuell bei ' + preisTxt + '.'}
 
 Schau es dir hier in Ruhe an:
-👉 ${p.link}
+👉 ${link}
 
-Wie immer gilt: Kauf nichts, was du nicht brauchst. Aber wenn du zu ${ziel} gehörst, ist das einen Blick wert.
+${eigen ? 'Ich freue mich riesig, wenn du reinschaust – und noch mehr über dein Feedback.' : 'Wie immer gilt: Kauf nichts, was du nicht brauchst. Aber wenn du zu ' + ziel + ' gehörst, ist das einen Blick wert.'}
 
-Herzliche Grüße
-
-PS: Der Link oben ist ein Partnerlink – für dich ändert sich am Preis nichts.`;
+Herzliche Grüße${eigen ? '' : '\n\nPS: Der Link oben ist ein Partnerlink – für dich ändert sich am Preis nichts.'}`;
 
   /* --- 4. Pinterest-Pin --- */
   const pin =
 `Pin-Titel:
-${n1} – so funktioniert's mit ${p.name}
+${n1} – ${eigen ? p.name : "so funktioniert's mit " + p.name}
 
 Pin-Beschreibung:
-${p.name} im Überblick: ${n1}, ${n2} und ${n3}. Ideal für ${ziel}. Jetzt alle Infos ansehen! ${p.launch ? 'Start' + launchTxt + '. ' : ''}#affiliatemarketing #onlinegeldverdienen #passiveseinkommen #nebeneinkommen (Werbung)
+${p.name} im Überblick: ${n1}, ${n2} und ${n3}. Ideal für ${ziel}. ${frei ? 'Jetzt gratis sichern!' : 'Jetzt alle Infos ansehen!'} #onlinegeldverdienen #nebeneinkommen${typ==='buch' ? ' #buchtipp #lesen' : typ==='tool' ? ' #kitools #digitaletools' : ''}${eigen ? '' : ' #affiliatemarketing (Werbung)'}
 
 Ziel-Link für den Pin:
-${p.link}`;
+${link}`;
 
   const bloecke = [
     { titel:'🎬 Avatar-Videoskript (für HeyGen)', text: video },
@@ -771,31 +1803,8 @@ ${p.link}`;
     </div>`).join('');
 }
 
-/* ---------- Helfer ---------- */
-function kopieren(text){
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>toast('Kopiert ✔')).catch(()=>fallbackKopieren(text));
-  } else { fallbackKopieren(text); }
-}
-function fallbackKopieren(text){
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  document.body.appendChild(ta);
-  ta.select();
-  try{ document.execCommand('copy'); toast('Kopiert ✔'); }catch(e){ alert('Kopieren nicht möglich – bitte manuell markieren.'); }
-  document.body.removeChild(ta);
-}
-function toast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 1800);
-}
-function esc(str){
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
 
-/* ---------- Start ---------- */
+typWechsel();
 produktListeRendern();
 </script>
 </body>
