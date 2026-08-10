@@ -193,6 +193,21 @@
     font-size:15px;
     line-height:1.7;
   }
+  .beitrag-edit{
+    width:100%;
+    min-height:120px;
+    margin-top:8px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--text);
+    font-family:inherit;
+    font-size:14px;
+    line-height:1.6;
+    padding:10px;
+    resize:vertical;
+  }
+  .beitrag-edit:focus{outline:2px solid var(--gold);border-color:transparent}
   .skript-output .abschnitt{
     font-family:'Unbounded',sans-serif;
     font-size:11px;
@@ -838,7 +853,6 @@ function satzForm(arr){
 }
 
 function beitragErzeugen(p, typ, hook, haupt){
-  const v1 = p.vorteile[0] || '';
   const kat = p.kategorie || '';
   let tags;
   if(typ==='buch'){
@@ -861,32 +875,50 @@ function beitragErzeugen(p, typ, hook, haupt){
     };
     tags = ['#tiktokshop', ...(katTags[kat]||['#empfehlung']), '#musthave','#fürdich'];
   }
-  const ort = typ==='buch' ? 'Erhältlich bei Amazon – Link in der Bio.'
-            : typ==='affiliate' ? 'Direkt über den Warenkorb im Video bestellbar.'
-            : typ==='freebie' ? 'Gratis über den Link in der Bio.'
-            : 'Alle Infos über den Link in der Bio.';
+
+  // Echter Link wenn vorhanden, statt fester Phrase
+  const linkText = p.link ? p.link : 'Link in der Bio';
+  const ort = typ==='buch' ? `Erhältlich bei Amazon: ${linkText}`
+            : typ==='affiliate' ? (p.link ? `Hier geht's zum Produkt: ${p.link}` : 'Direkt über den Warenkorb im Video bestellbar.')
+            : typ==='freebie' ? `Gratis sichern: ${linkText}`
+            : `Alle Infos hier: ${linkText}`;
   const werbung = typ==='affiliate' ? 'Werbung' : 'Werbung (in eigener Sache)';
-  const emojis = ['💡','✨','👀','🔥'];
-  const emoji = zufall(emojis);
+  const emoji = zufall(['💡','✨','👀','🔥']);
 
-  // Beitragstexte leiten sich aus dem TATSÄCHLICHEN Skript ab (Hook + Hauptteil),
-  // damit jede der 31 Varianten auch wirklich unterschiedliche Social-Texte bekommt —
-  // nicht mehr aus einem fest zwischengespeicherten Standardtext.
-  const opener = ersterSatzteil(hook, 90) || (v1 ? v1.charAt(0).toUpperCase()+v1.slice(1) : p.name);
-  const kern = ersterSatzteil(haupt, 130) || v1;
+  // Alle Vorteile als vollständige Sätze, nicht nur das erste Satzfragment des Skripts —
+  // damit z. B. bei "3 Gründe" auch wirklich alle 3 im Beitrag stehen.
+  const kern = satzForm(p.vorteile) || (hook ? ersterSatzteil(hook,90) : p.name);
 
-  const tiktok = opener + ' ' + emoji + '\n' + kern + '\n' + p.name + ': ' + ort + '\n' + werbung + '\n\n' + tags.join(' ');
+  // Eigene Hook-Pools für Beitragstexte, unabhängig vom Video-Hook — damit "neu würfeln"
+  // auch wirklich etwas anderes liefert und nicht nur den Emoji tauscht.
+  const openerPool = [
+    `${p.name}? Das solltest du kennen. ${emoji}`,
+    `Kurz gesagt: ${p.name}. ${emoji}`,
+    `Darum geht's bei ${p.name}. ${emoji}`,
+    `${p.name} in aller Kürze. ${emoji}`,
+    `Nicht weiterscrollen, wenn dich das hier interessiert. ${emoji}`
+  ];
+  const opener = zufall(openerPool);
 
-  const ytTitel = wortSlice(p.name + ' – ' + ersterSatzteil(hook, 60), 95);
-  const youtube = 'Titel:\n' + ytTitel + '\n\nBeschreibung:\n' + kern + ' ' + ort + '\n' + werbung + '\n\n#shorts ' + tags.slice(0,3).join(' ');
+  const tiktok = opener + '\n' + kern + '\n' + ort + '\n' + werbung + '\n\n' + tags.join(' ');
 
-  // Instagram: fast wie TikTok, aber weniger Hashtags (3-5)
+  const ytTitelPool = [
+    wortSlice(`${p.name}: ${p.vorteile[0]||''}`, 95),
+    wortSlice(`${p.name} im Überblick — lohnt sich das?`, 95),
+    wortSlice(`Das kann ${p.name}`, 95)
+  ];
+  const ytTitel = zufall(ytTitelPool);
+  const youtube = 'Titel:\n' + ytTitel + '\n\nBeschreibung:\n' + kern + '\n' + ort + '\n' + werbung + '\n\n#shorts ' + tags.slice(0,3).join(' ');
+
   const igTags = tags.slice(0,5);
-  const instagram = opener + ' ' + emoji + '\n' + kern + '\n' + p.name + ': ' + ort + '\n' + werbung + '\n\n' + igTags.join(' ');
+  const instagram = opener + '\n' + kern + '\n' + ort + '\n' + werbung + '\n\n' + igTags.join(' ');
 
-  // Pinterest: Suchmaschine statt Feed — Titel mit Suchbegriff vorn, sachlichere Beschreibung
-  const pinTitel = wortSlice(p.name + ' – ' + ersterSatzteil(hook, 65), 100);
-  const pinBeschreibung = p.name + ': ' + kern + ' ' + ort + ' ' + werbung + '\n\n' + tags.slice(0,4).join(' ');
+  const pinTitelPool = [
+    wortSlice(`${p.name} – ${p.vorteile[0]||''}`, 100),
+    wortSlice(`${p.name}: Das steckt drin`, 100)
+  ];
+  const pinTitel = zufall(pinTitelPool);
+  const pinBeschreibung = kern + '\n' + ort + ' ' + werbung + '\n\n' + tags.slice(0,4).join(' ');
   const pinterest = 'Pin-Titel:\n' + pinTitel + '\n\nPin-Beschreibung:\n' + pinBeschreibung;
 
   return { tiktok, youtube, instagram, pinterest };
@@ -903,11 +935,11 @@ function beitragNeuGenerieren(){
   akt.youtube = beitrag.youtube;
   akt.instagram = beitrag.instagram;
   akt.pinterest = beitrag.pinterest;
-  const bloecke = document.querySelectorAll('#skriptBox .skript-output');
-  bloecke[1].innerHTML = '<span class="abschnitt">📱 TikTok-Beitragstext</span>' + esc(beitrag.tiktok);
-  bloecke[2].innerHTML = '<span class="abschnitt cyan">▶️ YouTube Shorts – Titel &amp; Beschreibung</span>' + esc(beitrag.youtube);
-  bloecke[3].innerHTML = '<span class="abschnitt">📸 Instagram-Beitragstext</span>' + esc(beitrag.instagram);
-  bloecke[4].innerHTML = '<span class="abschnitt cyan">📌 Pinterest-Pin</span>' + esc(beitrag.pinterest);
+  const felder = document.querySelectorAll('#skriptBox .beitrag-edit');
+  if(felder[0]) felder[0].value = beitrag.tiktok;
+  if(felder[1]) felder[1].value = beitrag.youtube;
+  if(felder[2]) felder[2].value = beitrag.instagram;
+  if(felder[3]) felder[3].value = beitrag.pinterest;
   toast('Beitragstexte neu gewürfelt ✔');
 }
 
@@ -1251,19 +1283,23 @@ function renderSkriptAusgabePoliert(pol, p, typ, stilLabel){
     <button class="btn btn-ghost" onclick="skriptSpeichern()">💾 In „Meine Skripte" speichern</button>
     <p style="color:var(--gruen);font-size:12px;margin-top:8px">✔ Titel, Beschreibung und Skript wurden in einem Durchgang erstellt — passen inhaltlich zusammen.</p>
     <div class="skript-output">
-      <span class="abschnitt">📱 TikTok-Beitragstext</span>${esc(pol.tiktok)}
+      <span class="abschnitt">📱 TikTok-Beitragstext (editierbar)</span>
+      <textarea class="beitrag-edit" oninput="window._skriptAktuell.tiktok=this.value">${esc(pol.tiktok)}</textarea>
     </div>
     <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.tiktok)">📋 TikTok-Text kopieren</button>
     <div class="skript-output">
-      <span class="abschnitt cyan">▶️ YouTube Shorts – Titel &amp; Beschreibung</span>${esc(youtube)}
+      <span class="abschnitt cyan">▶️ YouTube Shorts – Titel &amp; Beschreibung (editierbar)</span>
+      <textarea class="beitrag-edit" oninput="window._skriptAktuell.youtube=this.value">${esc(youtube)}</textarea>
     </div>
     <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.youtube)">📋 YouTube-Text kopieren</button>
     <div class="skript-output">
-      <span class="abschnitt">📸 Instagram-Beitragstext</span>${esc(pol.instagram)}
+      <span class="abschnitt">📸 Instagram-Beitragstext (editierbar)</span>
+      <textarea class="beitrag-edit" oninput="window._skriptAktuell.instagram=this.value">${esc(pol.instagram)}</textarea>
     </div>
     <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.instagram)">📋 Instagram-Text kopieren</button>
     <div class="skript-output">
-      <span class="abschnitt cyan">📌 Pinterest-Pin</span>${esc(pinterest)}
+      <span class="abschnitt cyan">📌 Pinterest-Pin (editierbar)</span>
+      <textarea class="beitrag-edit" oninput="window._skriptAktuell.pinterest=this.value">${esc(pinterest)}</textarea>
     </div>
     <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.pinterest)">📋 Pinterest-Text kopieren</button>`;
   document.getElementById('skriptBox').scrollIntoView({behavior:'smooth', block:'start'});
@@ -1290,20 +1326,24 @@ function renderSkriptAusgabe(hook, haupt, cta, p, typ, stilLabel){
     <div id="polierStatus" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
     <p style="color:var(--amber);font-size:12px;margin-top:8px">⚠️ Erst speichern, dann erst in HeyGen einfügen — sonst ist der Text weg, sobald du das nächste Skript generierst. Du brauchst ihn später auch für den Untertitelbrenner.</p>
     <div class="skript-output">
-      <span class="abschnitt">📱 TikTok-Beitragstext</span>${esc(beitrag.tiktok)}
+      <span class="abschnitt">📱 TikTok-Beitragstext (editierbar)</span>
+      <textarea class="beitrag-edit" oninput="window._skriptAktuell.tiktok=this.value">${esc(beitrag.tiktok)}</textarea>
     </div>
     <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.tiktok)">📋 TikTok-Text kopieren</button>
     <button class="btn btn-ghost" onclick="beitragNeuGenerieren()">🔄 Beitragstexte neu würfeln</button>
     <div class="skript-output">
-      <span class="abschnitt cyan">▶️ YouTube Shorts – Titel &amp; Beschreibung</span>${esc(beitrag.youtube)}
+      <span class="abschnitt cyan">▶️ YouTube Shorts – Titel &amp; Beschreibung (editierbar)</span>
+      <textarea class="beitrag-edit" oninput="window._skriptAktuell.youtube=this.value">${esc(beitrag.youtube)}</textarea>
     </div>
     <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.youtube)">📋 YouTube-Text kopieren</button>
     <div class="skript-output">
-      <span class="abschnitt">📸 Instagram-Beitragstext</span>${esc(beitrag.instagram)}
+      <span class="abschnitt">📸 Instagram-Beitragstext (editierbar)</span>
+      <textarea class="beitrag-edit" oninput="window._skriptAktuell.instagram=this.value">${esc(beitrag.instagram)}</textarea>
     </div>
     <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.instagram)">📋 Instagram-Text kopieren</button>
     <div class="skript-output">
-      <span class="abschnitt cyan">📌 Pinterest-Pin</span>${esc(beitrag.pinterest)}
+      <span class="abschnitt cyan">📌 Pinterest-Pin (editierbar)</span>
+      <textarea class="beitrag-edit" oninput="window._skriptAktuell.pinterest=this.value">${esc(beitrag.pinterest)}</textarea>
     </div>
     <button class="btn btn-primary" onclick="kopieren(window._skriptAktuell.pinterest)">📋 Pinterest-Text kopieren</button>`;
   document.getElementById('skriptBox').scrollIntoView({behavior:'smooth', block:'start'});
@@ -1325,14 +1365,14 @@ async function skriptPolieren(){
 
   try{
     const systemPrompt = 'Du bist eine erfahrene deutsche Social-Media-Redakteurin. Du bekommst ein automatisch erzeugtes Video-Skript (Hook, Hauptteil, Call-to-Action) fuer ein Produkt sowie die Kanal-Hinweise (wo es erhaeltlich ist, Werbekennzeichnung). Deine Aufgabe: Schreibe daraus EIN zusammenhaengendes, in sich stimmiges Gesamtpaket — nicht mehrere unabhaengig zusammengeschnittene Fragmente. Titel, Beschreibungen und Kanal-Texte muessen alle dieselbe Kernaussage transportieren und inhaltlich zueinander passen. Konkrete Regeln: Schreibe jeden Text als vollstaendigen, in sich abgeschlossenen Gedanken — schneide niemals einfach einen Satz mittendrin ab. Vermeide generische Fuellsaetze wie "das Problem, das du kennst". Nutze die Produktdetails so konkret wie moeglich. Variiere Satzlaenge bewusst. Bleib bei den Fakten des Originals (Produktname, Bezugsquelle, Werbekennzeichnung), aendere nur Formulierung, Aufbau und Kuerzung. Antworte AUSSCHLIESSLICH mit einem JSON-Objekt ohne Markdown-Codeblock mit genau diesen Feldern: hook, haupt, cta (Skript fuer HeyGen), tiktok (Beitragstext mit Hashtags), youtube_titel (max 95 Zeichen, eigenstaendiger Satz), youtube_beschreibung (eigenstaendiger Absatz plus Bezugsquelle, Werbekennzeichnung, Hashtags), instagram (Beitragstext mit Hashtags), pinterest_titel, pinterest_beschreibung.';
-    const bezugsquelle = document.getElementById('skriptText') ? '' : '';
     const typInfo = p.typ || 'affiliate';
-    const ortInfo = typInfo==='buch' ? 'Erhaeltlich bei Amazon – Link in der Bio.'
-                   : typInfo==='affiliate' ? 'Direkt ueber den Warenkorb im Video bestellbar.'
-                   : typInfo==='freebie' ? 'Gratis ueber den Link in der Bio.'
-                   : 'Alle Infos ueber den Link in der Bio.';
+    const linkInfo = p.link ? p.link : 'kein Link hinterlegt — schreibe "Link in der Bio"';
+    const ortInfo = typInfo==='buch' ? `Erhaeltlich bei Amazon: ${linkInfo}`
+                   : typInfo==='affiliate' ? (p.link ? `Direkter Link: ${p.link}` : 'Direkt ueber den Warenkorb im Video bestellbar.')
+                   : typInfo==='freebie' ? `Gratis sichern: ${linkInfo}`
+                   : `Alle Infos: ${linkInfo}`;
     const werbungInfo = typInfo==='affiliate' ? 'Werbung' : 'Werbung (in eigener Sache)';
-    const userMsg = `Produkt: ${p.name}\nZielgruppe: ${p.zielgruppe || 'nicht angegeben'}\nVorteile: ${(p.vorteile||[]).join('; ')}\nBezugsquelle: ${ortInfo}\nWerbekennzeichnung: ${werbungInfo}\n\nBisheriger Hook:\n${akt.hook}\n\nBisheriger Hauptteil:\n${akt.haupt}\n\nBisherige Call-to-Action:\n${(akt.text.split('\\n\\n').pop())}`;
+    const userMsg = `Produkt: ${p.name}\nZielgruppe: ${p.zielgruppe || 'nicht angegeben'}\nVorteile: ${(p.vorteile||[]).join('; ')}\nBezugsquelle (den Link woertlich uebernehmen, wenn einer angegeben ist): ${ortInfo}\nWerbekennzeichnung: ${werbungInfo}\n\nBisheriger Hook:\n${akt.hook}\n\nBisheriger Hauptteil:\n${akt.haupt}\n\nBisherige Call-to-Action:\n${(akt.text.split('\\n\\n').pop())}`;
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method:"POST",
